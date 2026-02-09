@@ -3,241 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Our Timeline 🍫</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,500&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <title>Official Document 📄</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+
         body {
-            font-family: 'Montserrat', sans-serif;
-            background: #1a1a1a;
-            color: #fff;
-            overflow-x: hidden;
-            transition: background 1s ease; /* Smooth background transition */
-        }
-
-        /* FIXED ELEMENTS */
-        .header {
-            position: fixed; top: 20px; width: 100%; text-align: center; z-index: 100;
-            opacity: 0.8; mix-blend-mode: difference;
-        }
-        .music-note { font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
-
-        .progress-bar {
-            position: fixed; top: 0; left: 0; height: 4px; width: 0%; 
-            background: #fff; z-index: 101; transition: width 0.1s;
-        }
-
-        /* THE CENTRAL STAGE */
-        .stage {
-            position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 280px; height: 400px;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 10;
-            pointer-events: none; /* Let scroll pass through */
-        }
-
-        /* THE MORPHING CHOCOLATE BAR */
-        .choco-bar {
-            width: 200px; height: 300px;
-            border-radius: 15px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            position: relative;
-            overflow: hidden;
-            background-size: cover;
-            background-position: center;
-        }
-
-        /* Wrapper Styling (Changes dynamically) */
-        .wrapper-dark { background: linear-gradient(135deg, #2c2c2c, #000); border: 2px solid #555; }
-        .wrapper-spicy { background: linear-gradient(135deg, #d32f2f, #8e0000); border: 2px solid #ff6659; }
-        .wrapper-milk { background: linear-gradient(135deg, #8d6e63, #5d4037); border: 2px solid #a1887f; }
-        .wrapper-gold { background: linear-gradient(135deg, #ffd700, #b8860b); border: 2px solid #fff; box-shadow: 0 0 40px rgba(255, 215, 0, 0.6); }
-
-        .label {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem; text-align: center; width: 100%;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-
-        /* SCROLL SECTIONS */
-        .scroll-container {
-            position: relative; z-index: 20;
-        }
-
-        .section {
             height: 100vh;
-            display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
-            padding-bottom: 100px;
-            text-align: center;
-            opacity: 0; transition: opacity 0.5s;
+            width: 100vw;
+            background: #111;
+            font-family: 'Montserrat', sans-serif;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
 
-        .section.active { opacity: 1; }
-
-        .text-box {
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(10px);
+        /* --- SCREEN 1: THE CONTRACT --- */
+        #screen-contract {
+            background: #fff;
+            color: #222;
+            width: 90%;
+            max-width: 350px;
             padding: 30px;
-            border-radius: 20px;
-            max-width: 85%;
-            border: 1px solid rgba(255,255,255,0.2);
-            transform: translateY(20px);
+            border-radius: 5px;
+            box-shadow: 0 0 50px rgba(255,255,255,0.1);
+            position: relative;
+            transform: translateY(0);
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .stamp-header {
+            font-family: 'Courier Prime', monospace;
+            border-bottom: 2px solid #222;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .terms-list {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-family: 'Courier Prime', monospace;
+        }
+
+        .terms-list li { margin-bottom: 10px; }
+
+        .signature-box {
+            border: 2px dashed #999;
+            background: #f9f9f9;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #999;
+            font-size: 0.8rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .signature-box.signed {
+            border-color: #25D366;
+            color: #25D366;
+            background: #eaffea;
+        }
+
+        .fingerprint {
+            font-size: 3rem;
+            opacity: 0;
+            transform: scale(2);
+            transition: all 0.3s;
+            position: absolute;
+            color: #d4af37; /* Gold fingerprint */
+        }
+        .signature-box.signed .fingerprint { opacity: 1; transform: scale(1); }
+
+        /* --- SCREEN 2: THE REWARD (Hidden initially) --- */
+        #screen-reward {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 1s;
+            background: radial-gradient(circle, #3e2723 0%, #0f0505 100%);
+        }
+
+        .gift-box {
+            position: relative;
+            width: 200px; height: 200px;
+            cursor: pointer;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-15px);} }
+
+        .lid {
+            position: absolute; top: 0; left: 0; width: 100%; height: 50px;
+            background: #d4af37; /* Gold Lid */
+            z-index: 2;
             transition: transform 0.5s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Great Vibes'; color: #3e2723; font-size: 1.5rem;
         }
 
-        .section.active .text-box { transform: translateY(0); }
-
-        h2 { font-family: 'Playfair Display'; font-size: 2rem; margin-bottom: 10px; }
-        p { font-size: 1rem; line-height: 1.6; color: #ddd; }
-
-        /* FINAL BUTTON */
-        .claim-btn {
-            background: #fff; color: #000;
-            padding: 15px 40px; border-radius: 50px;
-            text-decoration: none; font-weight: bold;
-            display: inline-block; margin-top: 20px;
-            box-shadow: 0 10px 30px rgba(255,255,255,0.3);
+        .box-body {
+            position: absolute; top: 50px; left: 10px; width: 180px; height: 120px;
+            background: linear-gradient(135deg, #800020, #4a0012); /* Red Box */
+            z-index: 1;
         }
+
+        .chocolate-inside {
+            position: absolute; top: 60px; left: 40px; width: 120px; height: 120px;
+            background: #3e2723;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 3rem;
+            z-index: 0;
+            transform: scale(0);
+            transition: transform 0.5s 0.3s; /* Delay for lid opening */
+            box-shadow: 0 0 30px #d4af37;
+        }
+
+        .message-final {
+            margin-top: 50px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s 0.8s;
+        }
+
+        .message-final h1 { font-family: 'Great Vibes'; color: #d4af37; font-size: 2.5rem; margin-bottom: 10px; }
+        .message-final p { font-size: 0.9rem; color: #ccc; margin-bottom: 20px; }
+
+        .wa-btn {
+            background: #25D366; color: white; padding: 12px 30px;
+            border-radius: 50px; text-decoration: none; font-weight: bold;
+            display: inline-block; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* UTILITIES */
+        .hidden { display: none; }
+        .visible { opacity: 1 !important; pointer-events: all !important; }
+        .lid-open { transform: translateY(-100px) rotate(-10deg); }
+        .choco-reveal { transform: scale(1); }
 
     </style>
 </head>
 <body>
 
-    <div class="progress-bar" id="progress"></div>
-    
-    <div class="header">
-        <div class="music-note">🎵 Play our song...</div>
-    </div>
-
-    <div class="stage">
-        <div class="choco-bar wrapper-dark" id="hero-bar">
-            <div class="label" id="bar-label">The Past</div>
-        </div>
-    </div>
-
-    <div class="scroll-container">
+    <div id="screen-contract">
+        <div class="stamp-header">OFFICIAL AGREEMENT</div>
         
-        <div class="section" id="sec-1">
-            <div class="text-box">
-                <h2>The Bitter Days</h2>
-                <p>Before you, life was like 99% Dark Chocolate.<br>Intense, serious, and a little bit lonely.</p>
-            </div>
+        <div class="terms-list">
+            <p>I, the undersigned, hereby agree to the following terms:</p>
+            <br>
+            <ul>
+                <li>1. To accept all chocolates given to me. 🍫</li>
+                <li>2. To give unlimited hugs in return. 🤗</li>
+                <li>3. To admit that my partner is the best. 😎</li>
+            </ul>
         </div>
 
-        <div class="section" id="sec-2">
-            <div class="text-box">
-                <h2>The Spark ⚡</h2>
-                <p>Then we met. Suddenly life got Spicy.<br>The laughs, the drama, the butterflies.<br>You woke me up.</p>
-            </div>
+        <div class="signature-box" id="sign-box" onclick="signContract()">
+            <span id="sign-text">Tap to Sign with Fingerprint</span>
+            <div class="fingerprint">☝️</div>
+        </div>
+    </div>
+
+    <div id="screen-reward">
+        
+        <div class="gift-box" onclick="openBox()">
+            <div class="lid" id="lid">Open Me</div>
+            <div class="chocolate-inside" id="choco">❤️</div>
+            <div class="box-body"></div>
         </div>
 
-        <div class="section" id="sec-3">
-            <div class="text-box">
-                <h2>The Sweetness</h2>
-                <p>Now? You are my Milk Chocolate.<br>Smooth, comforting, and my favorite part of every day.</p>
-            </div>
+        <div class="message-final" id="final-msg">
+            <h1>It's Official!</h1>
+            <p>You signed the contract. No take-backs!<br>You are mine forever.</p>
+            <a href="#" id="wa-link" class="wa-btn">I Agree! ❤️</a>
         </div>
 
-        <div class="section" id="sec-4">
-            <div class="text-box" style="background: rgba(255, 215, 0, 0.2); border-color: #ffd700;">
-                <h2 style="color: #ffd700;">The Golden Future</h2>
-                <p>I promise to make the rest of our life the sweetest journey ever.</p>
-                <br>
-                <p style="font-size: 0.8rem;">(This ticket is valid for: One Real Chocolate Date)</p>
-                <a href="#" id="wa-link" class="claim-btn">Claim Forever ❤️</a>
-            </div>
-        </div>
-
-        <div style="height: 20vh;"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
-        // CONFIG
         const yourPhoneNumber = "917795253497"; 
 
-        // ELEMENTS
-        const bar = document.getElementById('hero-bar');
-        const label = document.getElementById('bar-label');
-        const body = document.body;
-        const progressBar = document.getElementById('progress');
-        
-        // INTERSECTION OBSERVER (Detects which section is visible)
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    // Activate Text Box
-                    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-                    entry.target.classList.add('active');
+        function signContract() {
+            const box = document.getElementById('sign-box');
+            const text = document.getElementById('sign-text');
+            const contract = document.getElementById('screen-contract');
+            const reward = document.getElementById('screen-reward');
 
-                    // UPDATE THE CHOCOLATE BAR
-                    const id = entry.target.id;
-                    updateState(id);
-                }
-            });
-        }, { threshold: 0.6 }); // Trigger when 60% visible
+            if (box.classList.contains('signed')) return;
 
-        // Observe all sections
-        document.querySelectorAll('.section').forEach(sec => observer.observe(sec));
+            // 1. Sign Animation
+            box.classList.add('signed');
+            text.innerText = "SIGNED & VERIFIED";
+            
+            // Haptic
+            if(navigator.vibrate) navigator.vibrate(100);
 
-        // SCROLL PROGRESS
-        window.addEventListener('scroll', () => {
-            const scrollTop = document.documentElement.scrollTop;
-            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (scrollTop / scrollHeight) * 100;
-            progressBar.style.width = scrolled + "%";
-        });
-
-        // STATE MANAGER
-        function updateState(id) {
-            // Reset Classes
-            bar.className = 'choco-bar';
-
-            if (id === 'sec-1') {
-                bar.classList.add('wrapper-dark');
-                body.style.background = "#1a1a1a"; // Dark Grey
-                label.innerText = "Before You";
-                label.style.color = "#aaa";
-            }
-            else if (id === 'sec-2') {
-                bar.classList.add('wrapper-spicy');
-                body.style.background = "#2b0a0a"; // Deep Red
-                label.innerText = "The Spark";
-                label.style.color = "#fff";
-                bar.style.transform = "rotate(-5deg) scale(1.1)";
-            }
-            else if (id === 'sec-3') {
-                bar.classList.add('wrapper-milk');
-                body.style.background = "#3e2723"; // Warm Brown
-                label.innerText = "Us Now";
-                label.style.color = "#fff";
-                bar.style.transform = "rotate(5deg) scale(1)";
-            }
-            else if (id === 'sec-4') {
-                bar.classList.add('wrapper-gold');
-                body.style.background = "#0f0f0f"; // Black (to make gold pop)
-                label.innerText = "Forever";
-                label.style.color = "#3e2723";
-                bar.style.transform = "scale(1.2)";
+            // 2. Wait and Transition
+            setTimeout(() => {
+                // Fly the contract away
+                contract.style.transform = "translateY(-150vh) rotate(-10deg)";
                 
-                // Fire Confetti only once
-                if(!window.fired) {
-                    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#ffd700', '#fff'] });
-                    window.fired = true;
-                }
-            }
+                // Show Reward Screen
+                setTimeout(() => {
+                    contract.style.display = 'none';
+                    reward.classList.add('visible');
+                }, 500);
+            }, 1000);
         }
 
-        // SET LINK
-        const msg = "I scrolled through our timeline! 🍫 The Golden Future looks amazing. I love you! ❤️";
-        document.getElementById('wa-link').href = `https://wa.me/${yourPhoneNumber}?text=${encodeURIComponent(msg)}`;
+        function openBox() {
+            const lid = document.getElementById('lid');
+            const choco = document.getElementById('choco');
+            const msg = document.getElementById('final-msg');
 
+            // 1. Open Lid
+            lid.classList.add('lid-open');
+
+            // 2. Reveal Chocolate
+            choco.classList.add('choco-reveal');
+
+            // 3. Show Message
+            msg.style.opacity = 1;
+            msg.style.transform = "translateY(0)";
+
+            // 4. Confetti
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#d4af37', '#ff0000', '#fff'] });
+
+            // 5. Set Link
+            const waMsg = "I signed the love contract! 📝❤️ Now where is my real chocolate?";
+            document.getElementById('wa-link').href = `https://wa.me/${yourPhoneNumber}?text=${encodeURIComponent(waMsg)}`;
+        }
     </script>
 </body>
 </html>
