@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Heart Scan 💖</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <title>For Zohara ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Orbitron:wght@500&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -13,7 +13,7 @@
             height: 100vh;
             width: 100vw;
             background: #1a0b10;
-            font-family: 'Nunito', sans-serif;
+            font-family: 'Quicksand', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -23,361 +23,288 @@
             position: relative;
         }
 
-        /* Soft Pulse Background */
-        .pulse-bg {
+        /* Soft Background Pulse */
+        .bg-pulse {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(255, 105, 180, 0.2) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: heartbeat 2s infinite ease-in-out;
-            z-index: 0;
-            pointer-events: none;
+            width: 100vw; height: 100vw;
+            background: radial-gradient(circle, rgba(255, 105, 180, 0.15) 0%, transparent 70%);
+            animation: pulseBg 3s infinite ease-in-out;
+            pointer-events: none; z-index: 0;
         }
-        @keyframes heartbeat {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-            50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.2; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+        @keyframes pulseBg { 0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); } }
+
+        /* --- SCREEN 1: SCANNER --- */
+        .scanner-container {
+            z-index: 10; text-align: center; width: 320px;
+            transition: opacity 0.5s, transform 0.5s;
         }
 
-        /* --- SCANNER HUD --- */
-        .hud-container {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            width: 320px;
-        }
+        h1 { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; color: #ff9eb5; margin-bottom: 20px; font-size: 1.2rem; }
 
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            letter-spacing: 3px;
-            color: #ff9eb5;
-            text-shadow: 0 0 10px rgba(255, 158, 181, 0.6);
-            margin-bottom: 30px;
-        }
-
-        /* FINGERPRINT AREA */
-        .scanner-ring {
-            position: relative;
-            width: 160px; height: 160px;
-            margin: 0 auto 40px;
+        .fingerprint-btn {
+            width: 140px; height: 140px;
+            margin: 0 auto 30px;
             border: 2px dashed rgba(255, 183, 178, 0.3);
             border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 0 20px rgba(255, 105, 180, 0.1);
+            font-size: 3.5rem; color: rgba(255, 105, 180, 0.5);
+            position: relative; cursor: pointer;
             transition: all 0.3s;
-            cursor: pointer;
-            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .scan-line {
+            position: absolute; width: 100%; height: 2px; background: #ff69b4;
+            box-shadow: 0 0 15px #ff69b4; top: 0; opacity: 0;
         }
 
-        .fingerprint-icon {
-            font-size: 4rem;
-            opacity: 0.5;
-            transition: opacity 0.3s;
-            filter: drop-shadow(0 0 5px #ff69b4);
-        }
+        .scanning .scan-line { opacity: 1; animation: scan 1.5s linear infinite; }
+        .scanning .fingerprint-btn { border-color: #ff69b4; box-shadow: 0 0 30px rgba(255, 105, 180, 0.3); transform: scale(1.05); }
+        
+        @keyframes scan { 0% { top: 10%; } 50% { top: 90%; } 100% { top: 10%; } }
 
-        /* Scanning Beam */
-        .scan-beam {
-            position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-            background: #ff69b4;
-            box-shadow: 0 0 15px #ff69b4, 0 0 30px #ff69b4;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* Active State */
-        .scanning .scan-beam {
-            opacity: 1;
-            animation: scanMove 1.5s linear infinite;
-        }
-        .scanning .fingerprint-icon { opacity: 1; color: #ff69b4; }
-        .scanning .scanner-ring { 
-            border-color: #ff69b4; 
-            border-style: solid;
-            box-shadow: 0 0 50px rgba(255, 105, 180, 0.4); 
-            transform: scale(1.05);
-        }
-
-        @keyframes scanMove {
-            0% { top: 10%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 90%; opacity: 0; }
-        }
-
-        /* LIVE LOG TEXT */
-        .log-text {
-            height: 40px;
-            font-family: 'Orbitron', monospace;
-            font-size: 0.9rem;
-            color: #fff;
-            text-shadow: 0 0 5px #ff69b4;
-            margin-bottom: 20px;
-        }
-
-        /* PROGRESS BAR */
-        .progress-container {
-            width: 80%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #ff69b4, #ff9eb5);
-            box-shadow: 0 0 10px #ff69b4;
-            transition: width 0.1s;
-        }
-
-        .hint {
-            margin-top: 15px;
-            font-size: 0.8rem;
-            opacity: 0.6;
-            animation: blink 2s infinite;
-        }
-        @keyframes blink { 50% { opacity: 0.3; } }
+        .status-text { font-family: 'Orbitron'; font-size: 0.8rem; height: 20px; margin-bottom: 20px; color: #fff; }
+        .progress-bar { width: 80%; height: 4px; background: rgba(255,255,255,0.1); margin: 0 auto; border-radius: 4px; overflow: hidden; }
+        .fill { height: 100%; width: 0%; background: #ff69b4; transition: width 0.1s; }
 
 
-        /* --- REPORT CARD (Hidden) --- */
-        .report-overlay {
-            position: absolute; top:0; left:0; width:100%; height:100%;
-            background: rgba(20, 10, 15, 0.95);
-            z-index: 50;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none;
+        /* --- SCREEN 2: THE 3 PACKAGES --- */
+        .packages-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: rgba(26, 11, 16, 0.98);
+            z-index: 20; opacity: 0; pointer-events: none;
             transition: opacity 0.8s;
             padding: 20px;
         }
-        
-        .report-card {
-            background: #fff0f5;
-            color: #5a3a4a;
-            width: 100%;
-            max-width: 350px;
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 0 40px rgba(255, 105, 180, 0.3);
-            transform: translateY(50px);
-            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-            overflow: hidden;
+
+        .pkg-header { font-family: 'Dancing Script'; font-size: 2.5rem; color: #ff69b4; margin-bottom: 20px; text-align: center; }
+
+        /* The Card Grid */
+        .cards-wrapper {
+            width: 100%; max-width: 350px;
+            display: flex; flex-direction: column; gap: 15px;
         }
 
-        .report-header {
-            border-bottom: 2px dashed #ffb7b2;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-        .report-header h2 { font-family: 'Orbitron'; color: #ff69b4; font-size: 1.5rem; }
-        .stamp {
-            border: 2px solid #ff69b4; color: #ff69b4;
-            display: inline-block; padding: 5px 10px;
-            border-radius: 5px; font-weight: bold; font-size: 0.8rem; letter-spacing: 1px;
-            margin-top: 5px; transform: rotate(-5deg);
-        }
-
-        .report-body p { margin-bottom: 15px; font-size: 1rem; line-height: 1.5; }
-        .highlight { color: #d63384; font-weight: bold; }
-
-        .prescription-list {
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 10px;
-            padding: 15px;
+        .care-card {
+            background: linear-gradient(135deg, #fff0f5, #ffe4e1);
+            border-radius: 15px;
+            padding: 20px;
             text-align: left;
-            margin: 20px 0;
-            font-size: 0.9rem;
-        }
-        .prescription-list li { margin-bottom: 8px; list-style-type: none; }
-        .prescription-list li:before { content: '💊 '; }
-
-        .accept-btn {
-            background: #ff69b4; color: white; text-decoration: none;
-            padding: 15px 30px; border-radius: 50px; font-weight: bold;
-            display: inline-block; box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
-            width: 100%;
+            position: relative;
+            cursor: pointer;
+            transform: scale(0.95); opacity: 0; /* Hidden animation state */
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            overflow: hidden;
+            height: 70px; /* Collapsed height */
         }
 
-        /* Floating Hearts */
-        .heart-float { position: absolute; font-size: 1.5rem; animation: floatUp 1.5s forwards; pointer-events: none; }
-        @keyframes floatUp { to { transform: translateY(-100px); opacity: 0; } }
+        .care-card.visible { opacity: 1; transform: scale(1); }
+        
+        .care-card.expanded {
+            height: auto; /* Expand */
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+            border: 2px solid #ff69b4;
+        }
+
+        /* Card Content */
+        .card-icon { 
+            position: absolute; top: 18px; left: 20px; font-size: 1.5rem; 
+            background: #fff; width: 35px; height: 35px; border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .card-title {
+            margin-left: 50px; font-weight: 700; color: #5a3a4a; font-size: 1.1rem;
+            line-height: 35px; /* Vertically center with icon */
+        }
+
+        .card-arrow {
+            position: absolute; top: 25px; right: 20px; 
+            font-size: 0.8rem; color: #999; transition: transform 0.3s;
+        }
+        .expanded .card-arrow { transform: rotate(90deg); }
+
+        .card-body {
+            margin-top: 15px; padding-top: 15px;
+            border-top: 1px dashed #ffb7b2;
+            font-size: 0.95rem; line-height: 1.5; color: #444;
+            display: none; /* Hidden when collapsed */
+        }
+        .expanded .card-body { display: block; animation: fadeIn 0.5s; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Final Button */
+        .wa-btn {
+            margin-top: 30px; opacity: 0;
+            background: #ff69b4; color: white; padding: 12px 30px;
+            border-radius: 50px; text-decoration: none; font-weight: bold;
+            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.4);
+            transition: opacity 1s 1s;
+        }
 
     </style>
 </head>
 <body>
 
-    <div class="pulse-bg"></div>
+    <div class="bg-pulse"></div>
 
-    <div class="hud-container" id="scanner-ui">
-        <h1>HEART RESONANCE SCAN</h1>
+    <div class="scanner-container" id="scanner">
+        <h1>HEART CONNECTION</h1>
+        <div class="status-text" id="status">PRESS THUMB TO CONNECT</div>
         
-        <div class="log-text" id="log">WAITING FOR TOUCH...</div>
-
-        <div class="scanner-ring" id="fingerprint-btn" 
+        <div class="fingerprint-btn" id="scan-btn" 
              onmousedown="startScan()" onmouseup="stopScan()" 
              ontouchstart="startScan()" ontouchend="stopScan()">
-            <div class="scan-beam"></div>
-            <div class="fingerprint-icon">❤️</div>
+            <div class="scan-line"></div>
+            <div>👍</div>
         </div>
 
-        <div class="progress-container">
-            <div class="progress-bar" id="bar"></div>
-        </div>
-        
-        <div class="hint">Hold thumb to scan emotional status</div>
+        <div class="progress-bar"><div class="fill" id="fill"></div></div>
     </div>
 
-    <div class="report-overlay" id="report-screen">
-        <div class="report-card">
-            <div class="report-header">
-                <h2>ANALYSIS REPORT</h2>
-                <div class="stamp">VERIFIED CUTIE</div>
-            </div>
+    <div class="packages-container" id="results">
+        <div class="pkg-header">For Zohara Bathul ❤️</div>
+        <p style="margin-bottom: 20px; opacity: 0.8;">Analysis Complete. 3 Packages found:</p>
+
+        <div class="cards-wrapper">
             
-            <div class="report-body">
-                <p><b>Subject:</b> My Favorite Person</p>
-                <p><b>Status:</b> You've been working hard and taking care of everyone else.</p>
-                <p class="highlight">Current Needs: To be spoiled.</p>
-                
-                <div class="prescription-list">
-                    <li><b>Immediate:</b> 1x Giant Chocolate 🍫</li>
-                    <li><b>Daily:</b> Unlimited Hugs & Kisses 🤗</li>
-                    <li><b>Note:</b> You are loved more than you know.</li>
+            <div class="care-card" id="card1" onclick="toggleCard('card1')">
+                <div class="card-icon">🔐</div>
+                <div class="card-title">My Promise to You</div>
+                <div class="card-arrow">▶</div>
+                <div class="card-body">
+                    <b>My Love,</b><br>
+                    I want you to know that I am always here. Through the good days and the bad days, I am your safe place.<br><br>
+                    Whenever you need me, just look for me. I'm not going anywhere. ❤️
                 </div>
             </div>
 
-            <a href="#" id="wa-link" class="accept-btn">Accept Care Package 🎁</a>
+            <div class="care-card" id="card2" onclick="toggleCard('card2')">
+                <div class="card-icon">👨‍👩‍👧</div>
+                <div class="card-title">Your Roots</div>
+                <div class="card-arrow">▶</div>
+                <div class="card-body">
+                    <b>Never forget this:</b><br>
+                    Your family loves you more than you even know. You are their pride, their joy, and their heart.<br><br>
+                    You are so deeply loved by everyone around you.
+                </div>
+            </div>
+
+            <div class="care-card" id="card3" onclick="toggleCard('card3')">
+                <div class="card-icon">✨</div>
+                <div class="card-title">Priority: Zohara</div>
+                <div class="card-arrow">▶</div>
+                <div class="card-body">
+                    <b>My dear Zohara Bathul,</b><br>
+                    You are the best. But even the best need rest.<br><br>
+                    1. Please get good sleep 😴<br>
+                    2. Eat well and on time 🥗<br>
+                    3. Remember how amazing you are 🌟
+                </div>
+            </div>
+
         </div>
+
+        <a href="#" id="wa-link" class="wa-btn">I Received Everything 🎁</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
-        // --- CONFIG ---
         const yourPhoneNumber = "917795253497"; 
 
-        // TEXT LOGS (The cute part)
-        const logs = [
-            "CONNECTING TO HEART...",
-            "IDENTIFYING USER...",
-            "MATCH FOUND: 'MY LOVE' ❤️",
-            "CHECKING SMILE LEVELS...",
-            "RESULT: RADIANT ✨",
-            "SCANNING STRESS...",
-            "RESULT: TOO HIGH. REDUCING...",
-            "MEASURING SWEETNESS...",
-            "RESULT: CRITICAL LEVELS 🍯",
-            "COMPILING CARE PLAN..."
-        ];
-
-        // ELEMENTS
-        const btn = document.getElementById('fingerprint-btn');
-        const ui = document.getElementById('scanner-ui');
-        const logDisplay = document.getElementById('log');
-        const bar = document.getElementById('bar');
-        const reportScreen = document.getElementById('report-screen');
-        const reportCard = document.querySelector('.report-card');
-
-        let isScanning = false;
+        // Scanner Logic
+        let scanning = false;
         let progress = 0;
-        let scanInterval;
+        let interval;
+        const scanBtn = document.getElementById('scan-btn');
+        const scannerUi = document.getElementById('scanner');
+        const fill = document.getElementById('fill');
+        const status = document.getElementById('status');
+        const results = document.getElementById('results');
 
         function startScan() {
-            isScanning = true;
-            ui.classList.add('scanning');
-            
-            // Haptic Pulse
+            scanning = true;
+            scannerUi.classList.add('scanning');
             if(navigator.vibrate) navigator.vibrate(50);
 
-            scanInterval = setInterval(() => {
-                if(!isScanning) return;
-                
+            interval = setInterval(() => {
+                if (!scanning) return;
                 progress += 1;
-                bar.style.width = progress + "%";
+                fill.style.width = progress + "%";
+                
+                if (progress < 30) status.innerText = "IDENTIFYING: ZOHARA...";
+                else if (progress < 60) status.innerText = "CONNECTING HEARTS...";
+                else if (progress < 90) status.innerText = "PREPARING PACKAGES...";
 
-                // Update Text Log based on progress
-                const logIndex = Math.floor((progress / 100) * logs.length);
-                if(logIndex < logs.length) {
-                    logDisplay.innerText = logs[logIndex];
-                }
-
-                // Spawn Hearts occasionally
-                if(progress % 10 === 0) createHeart();
-
-                // Complete
-                if(progress >= 100) {
-                    completeScan();
-                }
-
-            }, 50); // 5 seconds total scan time
+                if (progress >= 100) finishScan();
+            }, 40);
         }
 
         function stopScan() {
-            if(progress >= 100) return; // Already done
-
-            isScanning = false;
-            ui.classList.remove('scanning');
-            logDisplay.innerText = "SCAN INTERRUPTED";
-            logDisplay.style.color = "#ff69b4";
-            
-            clearInterval(scanInterval);
-            
-            // Reset logic
-            setTimeout(() => {
-                if(!isScanning && progress < 100) {
-                    progress = 0;
-                    bar.style.width = "0%";
-                    logDisplay.innerText = "WAITING FOR TOUCH...";
-                    logDisplay.style.color = "#fff";
-                }
-            }, 1000);
+            if (progress >= 100) return;
+            scanning = false;
+            scannerUi.classList.remove('scanning');
+            clearInterval(interval);
+            progress = 0; 
+            fill.style.width = "0%";
+            status.innerText = "SCAN FAILED. TRY AGAIN.";
         }
 
-        function createHeart() {
-            const h = document.createElement('div');
-            h.innerText = "❤️";
-            h.classList.add('heart-float');
-            // Random position near finger
-            const rect = btn.getBoundingClientRect();
-            h.style.left = (rect.left + Math.random() * rect.width) + 'px';
-            h.style.top = (rect.top) + 'px';
-            document.body.appendChild(h);
-            setTimeout(() => h.remove(), 1500);
-        }
-
-        function completeScan() {
-            clearInterval(scanInterval);
-            isScanning = false;
+        function finishScan() {
+            clearInterval(interval);
+            scanning = false;
             
-            // Success Haptic
-            if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
-
-            // Hide Scanner
-            ui.style.opacity = 0;
-
-            // Show Report
+            // Transition
+            scannerUi.style.opacity = 0;
             setTimeout(() => {
-                reportScreen.style.opacity = 1;
-                reportScreen.style.pointerEvents = 'all';
-                reportCard.style.transform = 'translateY(0)';
+                scannerUi.style.display = 'none';
+                results.style.opacity = 1;
+                results.style.pointerEvents = 'all';
                 
-                // Soft Confetti
-                confetti({ 
-                    particleCount: 100, 
-                    spread: 70, 
-                    origin: { y: 0.6 }, 
-                    colors: ['#ff69b4', '#ffb7b2', '#ffffff'],
-                    disableForReducedMotion: true
-                });
+                // Animate Cards entering one by one
+                setTimeout(() => document.getElementById('card1').classList.add('visible'), 100);
+                setTimeout(() => document.getElementById('card2').classList.add('visible'), 300);
+                setTimeout(() => document.getElementById('card3').classList.add('visible'), 500);
+                
+                // Show Button
+                document.querySelector('.wa-btn').style.opacity = 1;
             }, 500);
+        }
 
-            // WhatsApp Link
-            const msg = "I scanned my heart and got my prescription! 📝💊 I am ready for my Chocolate and Cuddles now! ❤️";
+        // Card Toggle Logic
+        function toggleCard(id) {
+            const card = document.getElementById(id);
+            const isExpanded = card.classList.contains('expanded');
+            
+            // Close all others (optional, keeps UI clean)
+            document.querySelectorAll('.care-card').forEach(c => c.classList.remove('expanded'));
+
+            if (!isExpanded) {
+                card.classList.add('expanded');
+                // Haptic and Confetti for opening
+                if(navigator.vibrate) navigator.vibrate(50);
+                
+                // Different confetti colors for different cards
+                let colors = [];
+                if(id === 'card1') colors = ['#ff0000', '#fff']; // Red for love
+                if(id === 'card2') colors = ['#00ff00', '#fff']; // Green for family/roots
+                if(id === 'card3') colors = ['#ffff00', '#fff']; // Gold for star/self
+                
+                confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 }, colors: colors });
+            }
+            
+            updateLink();
+        }
+
+        function updateLink() {
+            const msg = "I opened all my care packages! 🎁❤️ Thank you for reminding me to take care of myself. I love you!";
             document.getElementById('wa-link').href = `https://wa.me/${yourPhoneNumber}?text=${encodeURIComponent(msg)}`;
         }
+
     </script>
 </body>
 </html>
