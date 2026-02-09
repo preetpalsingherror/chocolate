@@ -3,317 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Biometric Scan 🧬</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <title>Our Timeline 🍫</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,500&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
     
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            height: 100vh;
-            width: 100vw;
-            background-color: #020205;
-            background-image: 
-                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
-            font-family: 'Share Tech Mono', monospace;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #00f3ff; /* Cyan */
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Ambient Glow */
-        .vignette {
-            position: absolute; top:0; left:0; width:100%; height:100%;
-            background: radial-gradient(circle, transparent 40%, #000 90%);
-            pointer-events: none; z-index: 1;
-        }
-
-        /* --- SCANNER HUD --- */
-        .hud-container {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            width: 320px;
-        }
-
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px #00f3ff;
-            margin-bottom: 5px;
-        }
-
-        .status {
-            font-size: 0.9rem;
-            color: rgba(0, 243, 255, 0.7);
-            margin-bottom: 40px;
-            height: 20px; /* Prevent jump */
-        }
-
-        /* FINGERPRINT AREA */
-        .scanner-ring {
-            position: relative;
-            width: 180px; height: 180px;
-            margin: 0 auto;
-            border: 2px solid rgba(0, 243, 255, 0.3);
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .fingerprint {
-            font-size: 5rem;
-            opacity: 0.5;
-            transition: opacity 0.3s;
-            color: #00f3ff;
-        }
-
-        /* SCANNING ANIMATION (Hidden by default) */
-        .scan-beam {
-            position: absolute; top: 0; left: 0; width: 100%; height: 5px;
-            background: #00f3ff;
-            box-shadow: 0 0 15px #00f3ff;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* Active State */
-        .scanning .scan-beam {
-            opacity: 1;
-            animation: scanMove 1.5s linear infinite;
-        }
-        .scanning .fingerprint { opacity: 1; text-shadow: 0 0 15px #00f3ff; }
-        .scanning .scanner-ring { border-color: #00f3ff; box-shadow: 0 0 40px rgba(0, 243, 255, 0.4); }
-
-        @keyframes scanMove {
-            0% { top: 0%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 100%; opacity: 0; }
-        }
-
-        /* PROGRESS METRICS */
-        .metrics {
-            margin-top: 40px;
-            text-align: left;
-            width: 100%;
-            padding: 0 20px;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-        .metric-row {
-            display: flex; justify-content: space-between;
-            margin-bottom: 10px; font-size: 0.8rem;
-        }
-        .bar-bg { width: 100%; height: 4px; background: rgba(0,243,255,0.2); margin-top: 5px; }
-        .bar-fill { height: 100%; background: #00f3ff; width: 0%; transition: width 0.2s; box-shadow: 0 0 5px #00f3ff; }
-
-        /* --- RESULT CARD (Hidden) --- */
-        .result-overlay {
-            position: absolute; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 50;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.5s;
-            padding: 30px;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        .result-box {
-            border: 2px solid #ff0055; /* Alert Red/Pink */
-            padding: 30px;
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+            overflow-x: hidden;
+            transition: background 1s ease; /* Smooth background transition */
+        }
+
+        /* FIXED ELEMENTS */
+        .header {
+            position: fixed; top: 20px; width: 100%; text-align: center; z-index: 100;
+            opacity: 0.8; mix-blend-mode: difference;
+        }
+        .music-note { font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
+
+        .progress-bar {
+            position: fixed; top: 0; left: 0; height: 4px; width: 0%; 
+            background: #fff; z-index: 101; transition: width 0.1s;
+        }
+
+        /* THE CENTRAL STAGE */
+        .stage {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 280px; height: 400px;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 10;
+            pointer-events: none; /* Let scroll pass through */
+        }
+
+        /* THE MORPHING CHOCOLATE BAR */
+        .choco-bar {
+            width: 200px; height: 300px;
+            border-radius: 15px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Wrapper Styling (Changes dynamically) */
+        .wrapper-dark { background: linear-gradient(135deg, #2c2c2c, #000); border: 2px solid #555; }
+        .wrapper-spicy { background: linear-gradient(135deg, #d32f2f, #8e0000); border: 2px solid #ff6659; }
+        .wrapper-milk { background: linear-gradient(135deg, #8d6e63, #5d4037); border: 2px solid #a1887f; }
+        .wrapper-gold { background: linear-gradient(135deg, #ffd700, #b8860b); border: 2px solid #fff; box-shadow: 0 0 40px rgba(255, 215, 0, 0.6); }
+
+        .label {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem; text-align: center; width: 100%;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* SCROLL SECTIONS */
+        .scroll-container {
+            position: relative; z-index: 20;
+        }
+
+        .section {
+            height: 100vh;
+            display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
+            padding-bottom: 100px;
             text-align: center;
-            background: rgba(20, 0, 5, 0.8);
-            box-shadow: 0 0 50px rgba(255, 0, 85, 0.2);
-            transform: scale(0.9);
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-width: 400px;
+            opacity: 0; transition: opacity 0.5s;
         }
 
-        .alert-header {
-            color: #ff0055; font-family: 'Orbitron'; font-size: 1.5rem; letter-spacing: 2px;
-            border-bottom: 1px solid #ff0055; padding-bottom: 10px; margin-bottom: 20px;
-            animation: blink 1s infinite;
-        }
-        @keyframes blink { 50% { opacity: 0.5; } }
+        .section.active { opacity: 1; }
 
-        .diagnosis-text {
-            color: #fff; font-size: 1rem; line-height: 1.6; margin-bottom: 25px;
+        .text-box {
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 85%;
+            border: 1px solid rgba(255,255,255,0.2);
+            transform: translateY(20px);
+            transition: transform 0.5s;
         }
 
-        .prescription-btn {
-            background: #ff0055; color: #fff; text-decoration: none;
-            padding: 15px 30px; font-family: 'Orbitron'; font-weight: bold;
-            display: inline-block; box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
-            transition: transform 0.2s; border: none; cursor: pointer;
+        .section.active .text-box { transform: translateY(0); }
+
+        h2 { font-family: 'Playfair Display'; font-size: 2rem; margin-bottom: 10px; }
+        p { font-size: 1rem; line-height: 1.6; color: #ddd; }
+
+        /* FINAL BUTTON */
+        .claim-btn {
+            background: #fff; color: #000;
+            padding: 15px 40px; border-radius: 50px;
+            text-decoration: none; font-weight: bold;
+            display: inline-block; margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(255,255,255,0.3);
         }
-        .prescription-btn:active { transform: scale(0.95); }
 
     </style>
 </head>
 <body>
 
-    <div class="vignette"></div>
+    <div class="progress-bar" id="progress"></div>
+    
+    <div class="header">
+        <div class="music-note">🎵 Play our song...</div>
+    </div>
 
-    <div class="hud-container" id="scanner-ui">
-        <h1>BIOMETRIC SCAN</h1>
-        <div class="status" id="status-text">WAITING FOR INPUT...</div>
-
-        <div class="scanner-ring" id="fingerprint-btn" 
-             onmousedown="startScan()" onmouseup="stopScan()" 
-             ontouchstart="startScan()" ontouchend="stopScan()">
-            <div class="scan-beam"></div>
-            <div class="fingerprint">☝️</div> 
-            </div>
-
-        <div class="metrics" id="metrics-panel">
-            <div class="metric-row">
-                <span>HEART RATE</span> <span id="bpm">0 BPM</span>
-            </div>
-            <div class="bar-bg"><div class="bar-fill" id="bar-1"></div></div>
-            <br>
-            <div class="metric-row">
-                <span>CUTENESS</span> <span id="cute-lvl">0%</span>
-            </div>
-            <div class="bar-bg"><div class="bar-fill" id="bar-2"></div></div>
-            <br>
-            <div class="metric-row">
-                <span>LOVE LEVELS</span> <span>CRITICAL</span>
-            </div>
-            <div class="bar-bg"><div class="bar-fill" id="bar-3"></div></div>
+    <div class="stage">
+        <div class="choco-bar wrapper-dark" id="hero-bar">
+            <div class="label" id="bar-label">The Past</div>
         </div>
     </div>
 
-    <div class="result-overlay" id="result-screen">
-        <div class="result-box">
-            <div class="alert-header">⚠️ DIAGNOSIS COMPLETE</div>
-            
-            <div class="diagnosis-text">
-                <p><b>SUBJECT:</b> The Prettiest Girl</p>
-                <br>
-                <p><b>CONDITION:</b> Patient is suffering from acute <i>"Lack-of-Me-itis"</i>.</p>
-                <br>
-                <p><b>PRESCRIPTION:</b> Immediate intake of Chocolates and Cuddles.</p>
+    <div class="scroll-container">
+        
+        <div class="section" id="sec-1">
+            <div class="text-box">
+                <h2>The Bitter Days</h2>
+                <p>Before you, life was like 99% Dark Chocolate.<br>Intense, serious, and a little bit lonely.</p>
             </div>
-
-            <a href="#" id="wa-link" class="prescription-btn">ACCEPT TREATMENT 💊</a>
         </div>
+
+        <div class="section" id="sec-2">
+            <div class="text-box">
+                <h2>The Spark ⚡</h2>
+                <p>Then we met. Suddenly life got Spicy.<br>The laughs, the drama, the butterflies.<br>You woke me up.</p>
+            </div>
+        </div>
+
+        <div class="section" id="sec-3">
+            <div class="text-box">
+                <h2>The Sweetness</h2>
+                <p>Now? You are my Milk Chocolate.<br>Smooth, comforting, and my favorite part of every day.</p>
+            </div>
+        </div>
+
+        <div class="section" id="sec-4">
+            <div class="text-box" style="background: rgba(255, 215, 0, 0.2); border-color: #ffd700;">
+                <h2 style="color: #ffd700;">The Golden Future</h2>
+                <p>I promise to make the rest of our life the sweetest journey ever.</p>
+                <br>
+                <p style="font-size: 0.8rem;">(This ticket is valid for: One Real Chocolate Date)</p>
+                <a href="#" id="wa-link" class="claim-btn">Claim Forever ❤️</a>
+            </div>
+        </div>
+
+        <div style="height: 20vh;"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
-        // --- CONFIG ---
+        // CONFIG
         const yourPhoneNumber = "917795253497"; 
 
         // ELEMENTS
-        const btn = document.getElementById('fingerprint-btn');
-        const ui = document.getElementById('scanner-ui');
-        const status = document.getElementById('status-text');
-        const metrics = document.getElementById('metrics-panel');
-        const resultScreen = document.getElementById('result-screen');
+        const bar = document.getElementById('hero-bar');
+        const label = document.getElementById('bar-label');
+        const body = document.body;
+        const progressBar = document.getElementById('progress');
         
-        // BARS
-        const bar1 = document.getElementById('bar-1');
-        const bar2 = document.getElementById('bar-2');
-        const bar3 = document.getElementById('bar-3');
-        const bpm = document.getElementById('bpm');
-        const cute = document.getElementById('cute-lvl');
+        // INTERSECTION OBSERVER (Detects which section is visible)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Activate Text Box
+                    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                    entry.target.classList.add('active');
 
-        let isScanning = false;
-        let scanProgress = 0;
-        let scanInterval;
-
-        function startScan() {
-            isScanning = true;
-            ui.classList.add('scanning');
-            metrics.style.opacity = 1;
-            
-            // Haptic Start
-            if(navigator.vibrate) navigator.vibrate(50);
-
-            scanInterval = setInterval(() => {
-                if(!isScanning) return;
-                
-                scanProgress += 1; // Speed
-                
-                // Update Bars Randomly for "Tech" effect
-                bar1.style.width = Math.min(scanProgress * 1.5, 100) + "%";
-                bar2.style.width = Math.min(scanProgress * 1.2, 100) + "%";
-                bar3.style.width = Math.min(scanProgress * 0.8, 100) + "%";
-
-                // Update Numbers
-                bpm.innerText = Math.floor(60 + scanProgress) + " BPM";
-                cute.innerText = Math.floor(scanProgress) + "%";
-
-                // Status Text Logic
-                if(scanProgress < 30) status.innerText = "SCANNING IDENTITY...";
-                else if(scanProgress < 60) status.innerText = "ANALYZING MOOD...";
-                else if(scanProgress < 90) status.innerText = "CALCULATING AFFECTION...";
-                else status.innerText = "COMPILING DIAGNOSIS...";
-
-                // Complete
-                if(scanProgress >= 100) {
-                    completeScan();
+                    // UPDATE THE CHOCOLATE BAR
+                    const id = entry.target.id;
+                    updateState(id);
                 }
+            });
+        }, { threshold: 0.6 }); // Trigger when 60% visible
 
-            }, 40);
-        }
+        // Observe all sections
+        document.querySelectorAll('.section').forEach(sec => observer.observe(sec));
 
-        function stopScan() {
-            if(scanProgress >= 100) return; // Already done
+        // SCROLL PROGRESS
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (scrollTop / scrollHeight) * 100;
+            progressBar.style.width = scrolled + "%";
+        });
 
-            isScanning = false;
-            ui.classList.remove('scanning');
-            status.innerText = "SCAN ABORTED. RETRY.";
-            status.style.color = "red";
-            
-            clearInterval(scanInterval);
-            scanProgress = 0;
-            
-            // Reset UI
-            setTimeout(() => {
-                status.innerText = "WAITING FOR INPUT...";
-                status.style.color = "rgba(0, 243, 255, 0.7)";
-                bar1.style.width = "0%";
-                bar2.style.width = "0%";
-                bar3.style.width = "0%";
-                metrics.style.opacity = 0;
-            }, 1000);
-        }
+        // STATE MANAGER
+        function updateState(id) {
+            // Reset Classes
+            bar.className = 'choco-bar';
 
-        function completeScan() {
-            clearInterval(scanInterval);
-            isScanning = false;
-            
-            // Success Haptic
-            if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
-
-            // Hide Scanner
-            ui.style.opacity = 0;
-
-            // Show Result
-            setTimeout(() => {
-                resultScreen.style.opacity = 1;
-                resultScreen.style.pointerEvents = 'all';
-                document.querySelector('.result-box').style.transform = 'scale(1)';
+            if (id === 'sec-1') {
+                bar.classList.add('wrapper-dark');
+                body.style.background = "#1a1a1a"; // Dark Grey
+                label.innerText = "Before You";
+                label.style.color = "#aaa";
+            }
+            else if (id === 'sec-2') {
+                bar.classList.add('wrapper-spicy');
+                body.style.background = "#2b0a0a"; // Deep Red
+                label.innerText = "The Spark";
+                label.style.color = "#fff";
+                bar.style.transform = "rotate(-5deg) scale(1.1)";
+            }
+            else if (id === 'sec-3') {
+                bar.classList.add('wrapper-milk');
+                body.style.background = "#3e2723"; // Warm Brown
+                label.innerText = "Us Now";
+                label.style.color = "#fff";
+                bar.style.transform = "rotate(5deg) scale(1)";
+            }
+            else if (id === 'sec-4') {
+                bar.classList.add('wrapper-gold');
+                body.style.background = "#0f0f0f"; // Black (to make gold pop)
+                label.innerText = "Forever";
+                label.style.color = "#3e2723";
+                bar.style.transform = "scale(1.2)";
                 
-                // Confetti (Pink/Red for love)
-                confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 }, colors: ['#ff0055', '#ffffff'] });
-            }, 500);
-
-            // WhatsApp Link
-            const msg = "Dr. Love, I accept the diagnosis! 🧬🍫 I need my prescription (Chocolate & Kisses) immediately! ❤️";
-            document.getElementById('wa-link').href = `https://wa.me/${yourPhoneNumber}?text=${encodeURIComponent(msg)}`;
+                // Fire Confetti only once
+                if(!window.fired) {
+                    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#ffd700', '#fff'] });
+                    window.fired = true;
+                }
+            }
         }
+
+        // SET LINK
+        const msg = "I scrolled through our timeline! 🍫 The Golden Future looks amazing. I love you! ❤️";
+        document.getElementById('wa-link').href = `https://wa.me/${yourPhoneNumber}?text=${encodeURIComponent(msg)}`;
+
     </script>
 </body>
 </html>
