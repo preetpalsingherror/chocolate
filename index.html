@@ -3,222 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For My Love 🍫</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>My Heart 🍫</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,400;1,400&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
     
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        /* --- RESET & LAYOUT --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
 
         body {
             height: 100vh;
             width: 100vw;
-            background: #120a08; /* Deep dark chocolate background */
-            font-family: 'Lato', sans-serif;
+            background: #1a0f0a; /* Deep Chocolate */
+            font-family: 'Poppins', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            color: white;
+            color: #eaddcf;
             position: relative;
         }
 
-        /* Romantic Glow Background */
-        .ambient-light {
-            position: absolute;
-            width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(160, 82, 45, 0.3) 0%, rgba(0,0,0,1) 80%);
-            pointer-events: none;
-            z-index: 1;
+        /* Animated Background */
+        .bg-pattern {
+            position: absolute; width: 100%; height: 100%;
+            background-image: radial-gradient(#3e2723 15%, transparent 16%), radial-gradient(#3e2723 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            opacity: 0.1;
+            z-index: 0;
+            animation: moveBg 20s linear infinite;
         }
+        @keyframes moveBg { 0% { background-position: 0 0, 30px 30px; } 100% { background-position: 60px 60px, 90px 90px; } }
 
-        /* TYPOGRAPHY */
-        h1 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 3rem;
-            color: #d4af37; /* Gold */
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
-            margin-bottom: 20px;
-            z-index: 10;
-            opacity: 0;
-            animation: fadeIn 2s forwards 0.5s;
-        }
-
-        p.hint {
-            font-size: 1rem;
-            letter-spacing: 1px;
-            color: rgba(255,255,255,0.7);
-            margin-bottom: 40px;
-            z-index: 10;
-            text-transform: uppercase;
-            opacity: 0;
-            animation: fadeIn 2s forwards 1.5s;
-        }
-
-        @keyframes fadeIn { to { opacity: 1; } }
-
-        /* --- THE HEART CONTAINER --- */
-        .container {
+        /* --- THE STAGE CONTAINER --- */
+        .stage-container {
             position: relative;
-            width: 300px;
-            height: 300px;
-            z-index: 5;
+            width: 320px;
+            height: 450px;
+            z-index: 10;
+            perspective: 1000px;
         }
 
-        /* 1. THE HIDDEN PHOTO (Bottom Layer) */
-        .hidden-photo {
+        /* COMMON CARD STYLES */
+        .layer {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            
-            /* --- REPLACE WITH YOUR PHOTO LINK HERE --- */
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+            backface-visibility: hidden;
+        }
+
+        /* --- LAYER 1: GOLD FOIL (SWIPE) --- */
+        .layer-foil {
+            background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            z-index: 4;
+            border: 1px solid #fff;
+            cursor: grab;
+        }
+        .layer-foil::before {
+            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
+            background: repeating-linear-gradient(45deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 2px, transparent 2px, transparent 4px);
+        }
+        .sticker {
+            width: 80px; height: 80px; background: #3e2723; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            border: 2px solid #d4af37; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            font-family: 'Dancing Script'; font-size: 1.5rem; color: #d4af37;
+        }
+
+        /* --- LAYER 2: HARD SHELL (TAP) --- */
+        .layer-shell {
+            background: linear-gradient(135deg, #2b1d1a, #1a0f0a);
+            z-index: 3;
+            border: 1px solid #5d4037;
+        }
+        .crack-svg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; opacity: 0; transition: opacity 0.1s;
+        }
+        .crack-path { fill: none; stroke: rgba(255,255,255,0.2); stroke-width: 2; stroke-linecap: round; }
+
+        /* --- LAYER 3: MELTING (HOLD) --- */
+        .layer-melt {
+            background: linear-gradient(135deg, #795548, #5d4037);
+            z-index: 2;
+            transition: opacity 0.1s; /* Fast visual update for melting */
+        }
+        .melt-overlay {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: radial-gradient(circle, rgba(255,100,100,0.4), transparent);
+            opacity: 0; pointer-events: none;
+        }
+
+        /* --- LAYER 4: THE CORE (PHOTO & LETTER) --- */
+        .layer-core {
+            background: #fff;
+            z-index: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align top */
+            padding: 0;
+        }
+        
+        .photo-area {
+            width: 100%;
+            height: 50%;
+            /* --- REPLACE LINK HERE --- */
             background-image: url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1000&auto=format&fit=crop');
-            
             background-size: cover;
             background-position: center;
-            
-            /* Clip it to a heart shape */
-            mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
-            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
-            mask-size: contain;
-            -webkit-mask-size: contain;
-            mask-repeat: no-repeat;
-            -webkit-mask-repeat: no-repeat;
-            mask-position: center;
-            -webkit-mask-position: center;
-            
-            z-index: 1;
-            transform: scale(0.95); /* Slight inset */
-        }
-
-        /* 2. THE CHOCOLATE COVER (Top Layer) */
-        .choco-cover {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 2;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        /* SVG Heart Style */
-        .choco-heart-svg {
-            width: 100%; height: 100%;
-            fill: #5d4037; /* Milk Chocolate */
-            stroke: #3e2723;
-            stroke-width: 1;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
-            transition: fill 3s; /* Transition for melting color change */
-        }
-
-        /* Drip Animation Class (Added via JS) */
-        .melting {
-            animation: meltShake 0.5s infinite;
-        }
-
-        @keyframes meltShake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            50% { transform: translate(-1px, -1px) rotate(1deg); }
-            100% { transform: translate(1px, 1px) rotate(0deg); }
-        }
-
-        /* PROGRESS BAR (Heat Meter) */
-        .heat-meter {
-            position: absolute;
-            bottom: -50px; left: 50%;
-            transform: translateX(-50%);
-            width: 80%; height: 6px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            opacity: 0;
-            transition: opacity 0.5s;
+            position: relative;
         }
         
-        .heat-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #ff416c, #ff4b2b);
-            box-shadow: 0 0 10px #ff4b2b;
-            transition: width 0.1s;
-        }
-
-        /* MESSAGE OVERLAY */
-        #final-msg {
-            position: absolute;
-            bottom: 50px;
-            text-align: center;
-            opacity: 0;
-            transition: opacity 1s;
-            z-index: 20;
-            width: 90%;
-            background: rgba(0,0,0,0.8);
+        .letter-area {
+            width: 100%;
+            height: 50%;
             padding: 20px;
-            border-radius: 15px;
-            border: 1px solid #d4af37;
+            overflow-y: auto; /* Allow scrolling */
+            background: #fff0f5;
+            color: #333;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem;
+            line-height: 1.5;
+            text-align: left;
+            position: relative;
         }
 
-        .whatsapp-btn {
-            background: #25D366;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 15px;
-            font-size: 0.9rem;
-            box-shadow: 0 0 20px rgba(37, 211, 102, 0.4);
-        }
-
-        /* HEAT PARTICLES */
-        .steam {
+        /* --- TEXT & UI --- */
+        .instruction {
             position: absolute;
-            background: rgba(255,255,255,0.4);
-            border-radius: 50%;
-            width: 10px; height: 10px;
-            filter: blur(4px);
-            opacity: 0;
+            bottom: 30px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: pulse 2s infinite;
             pointer-events: none;
-            z-index: 20;
         }
-        
-        @keyframes rise {
-            0% { opacity: 0; transform: translateY(0) scale(1); }
-            50% { opacity: 0.8; }
-            100% { opacity: 0; transform: translateY(-50px) scale(2); }
+        @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+        .progress-bar {
+            position: absolute; top: 20px; left: 20px; right: 20px;
+            height: 4px; background: rgba(255,255,255,0.2); border-radius: 10px;
+            overflow: hidden; opacity: 0; transition: opacity 0.5s;
+        }
+        .progress-fill { height: 100%; width: 0%; background: #ff4b2b; }
+
+        /* Shake Animation */
+        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
+
+        /* Removed Classes */
+        .swiped-right { transform: translateX(120%) rotate(20deg); opacity: 0; }
+        .shattered { transform: scale(1.1); opacity: 0; }
+        .melted { opacity: 0; pointer-events: none; }
+
+        /* Floating Hearts */
+        .heart { position: absolute; color: #d4af37; font-size: 20px; animation: floatUp 3s linear forwards; pointer-events: none; z-index: 50; }
+        @keyframes floatUp { to { transform: translateY(-200px); opacity: 0; } }
+
+        /* WhatsApp Button */
+        .wa-btn {
+            display: block; margin-top: 15px; text-align: center;
+            background: #25D366; color: white; padding: 10px 20px;
+            border-radius: 20px; text-decoration: none; font-family: 'Poppins'; font-size: 0.9rem;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
         }
 
     </style>
 </head>
 <body>
 
-    <div class="ambient-light"></div>
+    <div class="bg-pattern"></div>
 
-    <h1>My Heart is Yours</h1>
-    <p class="hint">Hold to Melt my Heart...</p>
+    <div class="stage-container">
 
-    <div class="container">
-        <div class="hidden-photo"></div>
+        <div class="layer layer-core" id="layer4">
+            <div class="photo-area">
+                <div style="position:absolute; bottom:0; width:100%; height:50%; background:linear-gradient(transparent, #fff0f5);"></div>
+            </div>
+            <div class="letter-area">
+                <p><b>My Dearest,</b></p>
+                <p>Just like this chocolate, my heart has layers. But you... you are the only one who has ever reached the center.</p>
+                <p>Thank you for breaking down my walls and melting my heart every single day.</p>
+                <p>You are my sweetest addiction.</p>
+                <br>
+                <p style="text-align: right;">- Yours Forever ❤️</p>
+                <a href="#" id="wa-link" class="wa-btn">I reached the center! 🍫</a>
+            </div>
+        </div>
 
-        <div class="choco-cover" id="choco-heart" 
-             onmousedown="startHeat()" onmouseup="stopHeat()" 
-             ontouchstart="startHeat()" ontouchend="stopHeat()">
-            
-            <svg class="choco-heart-svg" id="heart-svg" viewBox="0 0 24 24">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        <div class="layer layer-melt" id="layer3" 
+             onmousedown="startMelt()" onmouseup="stopMelt()" 
+             ontouchstart="startMelt()" ontouchend="stopMelt()">
+            <h2>Soft Heart</h2>
+            <p style="font-size: 0.9rem; margin-top:10px; opacity:0.8;">You make me soft...</p>
+            <div class="melt-overlay" id="melt-overlay"></div>
+            <div class="instruction">Hold to Melt</div>
+            <div class="progress-bar" style="opacity: 1;"><div class="progress-fill" id="melt-bar"></div></div>
+        </div>
+
+        <div class="layer layer-shell" id="layer2" onclick="crackShell()">
+            <h2 style="color: #d4af37;">Tough Exterior</h2>
+            <p style="font-size: 0.9rem; margin-top:10px; opacity:0.8;">I put up walls sometimes...</p>
+            <div class="instruction">Tap to Break</div>
+            <svg class="crack-svg" viewBox="0 0 100 100" id="cracks">
+                <path class="crack-path" d="M50 0 L40 30 L60 50 L30 80 L50 100" />
+                <path class="crack-path" d="M0 50 L30 40 L50 60 L80 40 L100 50" />
             </svg>
         </div>
 
-        <div class="heat-meter" id="meter">
-            <div class="heat-fill" id="fill"></div>
+        <div class="layer layer-foil" id="layer1">
+            <div class="sticker">For You</div>
+            <div class="instruction">Swipe Right ➜</div>
         </div>
-    </div>
 
-    <div id="final-msg">
-        <h2 style="color: #d4af37; font-family: 'Great Vibes'; margin-bottom: 10px;">You Melt Me...</h2>
-        <p style="font-size: 0.9rem; line-height: 1.5; color: #ddd;">
-            On the outside, I act tough.<br>But one touch from you, and I melt completely.
-        </p>
-        <a href="#" id="whatsapp-link" class="whatsapp-btn">I Melted It! ❤️</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -226,116 +233,122 @@
         // --- CONFIG ---
         const yourPhoneNumber = "917795253497"; 
 
-        // Variables
-        const heart = document.getElementById('choco-heart');
-        const heartSvg = document.getElementById('heart-svg');
-        const fill = document.getElementById('fill');
-        const meter = document.getElementById('meter');
-        const finalMsg = document.getElementById('final-msg');
-        
-        let heatLevel = 0;
-        let isHolding = false;
-        let interval;
-        let complete = false;
+        // --- LAYER 1: SWIPE LOGIC ---
+        const layer1 = document.getElementById('layer1');
+        let startX = 0;
 
-        // Start Warming Up
-        function startHeat() {
-            if (complete) return;
-            isHolding = true;
-            meter.style.opacity = 1;
-            heart.classList.add('melting'); // Shake effect
-
-            interval = setInterval(() => {
-                if (!isHolding) return;
-
-                heatLevel += 1;
-                updateVisuals();
-
-                // Generate Steam Particles
-                createSteam();
-
-                // Check Completion
-                if (heatLevel >= 100) {
-                    finishMelting();
-                }
-            }, 30); // Speed of melting
-        }
-
-        // Stop Warming (Cool Down)
-        function stopHeat() {
-            if (complete) return;
-            isHolding = false;
-            heart.classList.remove('melting');
-
-            // Slowly cool down if not finished
-            const coolDown = setInterval(() => {
-                if (isHolding || heatLevel <= 0 || complete) {
-                    clearInterval(coolDown);
-                    return;
-                }
-                heatLevel -= 2;
-                updateVisuals();
-            }, 20);
-        }
-
-        function updateVisuals() {
-            // Update Bar
-            fill.style.width = heatLevel + "%";
-            
-            // Fade out Chocolate
-            // Opacity goes from 1 to 0
-            heart.style.opacity = (100 - heatLevel) / 100;
-
-            // Change Color (Dark Brown -> Red Hot)
-            if (heatLevel > 50) {
-                heartSvg.style.fill = "#8B0000"; // Glow red when hot
-                heartSvg.style.filter = `drop-shadow(0 0 ${heatLevel/5}px #ff4b2b)`;
+        layer1.addEventListener('touchstart', (e) => startX = e.touches[0].clientX);
+        layer1.addEventListener('touchmove', (e) => {
+            let diff = e.touches[0].clientX - startX;
+            if (diff > 0) layer1.style.transform = `translateX(${diff}px) rotate(${diff/20}deg)`;
+        });
+        layer1.addEventListener('touchend', (e) => {
+            let diff = e.changedTouches[0].clientX - startX;
+            if (diff > 100) {
+                layer1.classList.add('swiped-right'); // Success
+                createParticles('✨');
             } else {
-                heartSvg.style.fill = "#5d4037"; // Back to chocolate
-                heartSvg.style.filter = "drop-shadow(0 10px 20px rgba(0,0,0,0.5))";
+                layer1.style.transform = 'translateX(0)'; // Reset
+            }
+        });
+        // Mouse support for desktop testing
+        layer1.addEventListener('mousedown', (e) => startX = e.clientX);
+        layer1.addEventListener('mouseup', (e) => {
+            let diff = e.clientX - startX;
+            if (diff > 100) {
+                layer1.classList.add('swiped-right'); 
+                createParticles('✨');
+            } else {
+                layer1.style.transform = 'translateX(0)';
+            }
+        });
+
+
+        // --- LAYER 2: CRACK LOGIC ---
+        const layer2 = document.getElementById('layer2');
+        const cracks = document.getElementById('cracks');
+        let taps = 0;
+
+        function crackShell() {
+            taps++;
+            
+            // Shake effect
+            layer2.classList.remove('shake');
+            void layer2.offsetWidth;
+            layer2.classList.add('shake');
+
+            // Haptic
+            if(navigator.vibrate) navigator.vibrate(50);
+
+            // Visual Damage
+            if (taps === 2) cracks.style.opacity = 0.3;
+            if (taps === 4) cracks.style.opacity = 0.6;
+            if (taps === 6) cracks.style.opacity = 1;
+
+            if (taps >= 8) {
+                layer2.classList.add('shattered');
+                createParticles('🍫');
             }
         }
 
-        function createSteam() {
-            const steam = document.createElement('div');
-            steam.classList.add('steam');
-            
-            // Random position near heart
-            const rect = heart.getBoundingClientRect();
-            const x = rect.left + Math.random() * rect.width;
-            const y = rect.top + Math.random() * (rect.height / 2);
-            
-            steam.style.left = x + 'px';
-            steam.style.top = y + 'px';
-            steam.style.animation = "rise 1s forwards";
-            
-            document.body.appendChild(steam);
-            setTimeout(() => steam.remove(), 1000);
+
+        // --- LAYER 3: MELT LOGIC ---
+        const layer3 = document.getElementById('layer3');
+        const meltBar = document.getElementById('melt-bar');
+        const meltOverlay = document.getElementById('melt-overlay');
+        let heat = 0;
+        let isHolding = false;
+        let meltInterval;
+
+        function startMelt() {
+            isHolding = true;
+            meltInterval = setInterval(() => {
+                heat += 1;
+                meltBar.style.width = heat + "%";
+                layer3.style.opacity = (100 - heat) / 100; // Fade out
+                meltOverlay.style.opacity = heat / 200; // Red glow
+
+                createParticles('❤️'); // Hearts flying
+
+                if (heat >= 100) {
+                    finishExperience();
+                }
+            }, 30);
         }
 
-        function finishMelting() {
-            complete = true;
-            clearInterval(interval);
-            heart.style.display = 'none'; // Remove chocolate entirely
-            meter.style.opacity = 0; // Hide meter
-
-            // Celebration
-            fireConfetti();
-            
-            // Show Message
-            setTimeout(() => {
-                finalMsg.style.opacity = 1;
-                finalMsg.style.pointerEvents = 'all';
-            }, 500);
-
-            // WhatsApp Link
-            const msg = "I melted your heart and saw the photo! 📸🍫 You are so cheesy but I love it! Happy Chocolate Day! ❤️";
-            document.getElementById('whatsapp-link').href = `https://wa.me/${yourPhoneNumber}?text=${encodeURIComponent(msg)}`;
+        function stopMelt() {
+            isHolding = false;
+            clearInterval(meltInterval);
         }
 
-        function fireConfetti() {
+        function finishExperience() {
+            clearInterval(meltInterval);
+            layer3.classList.add('melted');
+            
+            // Final Celebration
             confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#d4af37', '#ff4b2b'] });
+
+            // Setup WhatsApp
+            const msg = "I unwrapped the layers, broke the shell, melted your heart, and found the letter! 🍫❤️ Happy Chocolate Day!";
+            document.getElementById('wa-link').href = `https://wa.me/${yourPhoneNumber}?text=${encodeURIComponent(msg)}`;
         }
-    </script>
+
+
+        // --- UTILS: PARTICLES ---
+        function createParticles(emoji) {
+            const el = document.createElement('div');
+            el.innerText = emoji;
+            el.style.position = 'fixed';
+            el.style.left = Math.random() * 80 + 10 + '%';
+            el.style.top = '50%';
+            el.style.fontSize = '2rem';
+            el.style.pointerEvents = 'none';
+            el.style.animation = 'floatUp 1s forwards';
+            el.style.zIndex = 100;
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 1000);
+        }
+
+    </style>
 </body>
 </html>
