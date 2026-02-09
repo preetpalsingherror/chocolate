@@ -3,338 +3,340 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For My Love 🍫</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <title>You & Me 🍫</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Great+Vibes&family=Lato:wght@300;400&display=swap" rel="stylesheet">
     
     <style>
-        /* --- RESET & LAYOUT --- */
+        /* --- RESET & BASE --- */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
 
         body {
             height: 100vh;
             width: 100vw;
-            background: #1a0f0a; /* Deep Dark Chocolate */
-            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at center, #2b1d1a 0%, #0f0806 100%);
+            font-family: 'Lato', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            color: #eaddcf;
-            position: relative;
+            color: #fff;
         }
 
         /* Ambient Glow */
-        .glow {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(100,50,30,0.3) 0%, #000 90%);
-            z-index: 0; pointer-events: none;
+        .glow-bg {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            pointer-events: none;
         }
 
-        /* --- THE STAGE CONTAINER --- */
-        .stage-container {
+        /* --- THE BAR CONTAINER --- */
+        .bar-container {
             position: relative;
-            width: 320px;
-            height: 480px;
+            width: 300px;
+            height: 500px;
+            perspective: 1000px;
             z-index: 10;
         }
 
-        /* COMMON CARD STYLES */
+        /* COMMON LAYER STYLES */
         .layer {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: transform 0.3s ease-out; /* Smooth snapping */
-            background: #fff;
         }
 
-        /* --- LAYER 1: GOLD FOIL (SWIPE) --- */
-        .layer-foil {
-            background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+        /* --- LAYER 1: THE WRAPPER (You & Me) --- */
+        .wrapper {
+            background: linear-gradient(135deg, #8b0000 0%, #5c0000 100%); /* Rich Red */
             z-index: 4;
-            border: 1px solid #fff;
-            /* CRITICAL FIX FOR SWIPING */
-            touch-action: none; 
-            cursor: grab;
+            border: 2px solid #d4af37;
+            transform-origin: top;
         }
         
-        /* Gold Texture Pattern */
-        .layer-foil::after {
-            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
-            background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 2px, transparent 2px, transparent 4px);
-            pointer-events: none;
+        .brand-text {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            color: #d4af37; /* Gold */
+            text-align: center;
+            border-top: 2px solid #d4af37;
+            border-bottom: 2px solid #d4af37;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.4);
+        }
+        
+        .wrapper-tear-strip {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent 90%, rgba(0,0,0,0.2) 100%);
         }
 
-        .sticker {
-            width: 90px; height: 90px; background: #3e2723; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            border: 3px solid #d4af37; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            font-family: 'Dancing Script'; font-size: 1.8rem; color: #d4af37;
-            z-index: 5;
-        }
-
-        /* --- LAYER 2: HARD SHELL (TAP) --- */
-        .layer-shell {
-            background: radial-gradient(circle at 30% 30%, #4e342e, #1a0f0a);
+        /* --- LAYER 2: THE SILVER FOIL --- */
+        .foil {
+            background: linear-gradient(135deg, #e0e0e0, #b0b0b0, #f5f5f5, #999);
             z-index: 3;
+            transform-origin: bottom right;
+        }
+        
+        /* Crinkled Foil Texture */
+        .foil::after {
+            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
+            background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 2px, transparent 2px, transparent 4px);
+            opacity: 0.5;
+        }
+
+        /* --- LAYER 3: THE CHOCOLATE BAR --- */
+        .chocolate {
+            background: #3e2723;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 5px;
+            padding: 10px;
             border: 1px solid #5d4037;
         }
-        .crack-svg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; opacity: 0; transition: opacity 0.2s;
-        }
-        .crack-path { fill: none; stroke: rgba(255,255,255,0.3); stroke-width: 3; stroke-linecap: round; }
 
-        /* --- LAYER 3: MELTING (HOLD) --- */
-        .layer-melt {
-            background: #6d4c41; /* Milk Chocolate */
-            z-index: 2;
-            transition: opacity 0.1s;
+        .choco-square {
+            background: linear-gradient(145deg, #4e342e, #2d1e1b);
+            border-radius: 4px;
+            box-shadow: inset 2px 2px 5px rgba(255,255,255,0.1), inset -2px -2px 5px rgba(0,0,0,0.5);
+            position: relative;
         }
-        .melt-progress {
-            position: absolute; bottom: 0; left: 0; height: 100%; width: 100%;
-            background: linear-gradient(to top, #ff0a54, #ff477e);
-            opacity: 0; pointer-events: none; transition: opacity 0.5s;
+        /* Emboss effect */
+        .choco-square::before {
+            content: '❤️'; font-size: 1.2rem; position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            opacity: 0.2; filter: grayscale(100%);
         }
-        
-        /* --- LAYER 4: THE CORE (PHOTO & LETTER) --- */
-        .layer-core {
-            background: #fff0f5;
+
+        /* --- LAYER 4: THE LIQUID REVEAL --- */
+        .liquid-layer {
+            background: #1a0f0a;
             z-index: 1;
-            padding: 0;
-            overflow: hidden;
-        }
-        
-        .photo-area {
-            width: 100%; height: 45%;
-            /* REPLACE THIS LINK */
-            background-image: url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1000&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .letter-area {
-            width: 100%; height: 55%;
-            padding: 20px;
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.3rem;
-            color: #4a0404;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            opacity: 0; /* Hidden initially */
+            transition: opacity 1s;
         }
 
-        /* --- TEXT & UI --- */
-        .instruction {
+        /* --- ANIMATION CLASSES --- */
+        .slide-up { transform: translateY(-120%) rotate(-5deg); opacity: 0; }
+        .peel-off { transform: translateX(120%) rotate(20deg); opacity: 0; }
+        .melting-bar { opacity: 0; transition: opacity 2s; } /* Bar fades out */
+
+        /* DRIPPING EFFECT */
+        .drip {
             position: absolute;
-            bottom: 40px;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.8);
+            background: #3e2723;
+            width: 10px; height: 10px;
+            border-radius: 50%;
             pointer-events: none;
-            animation: pulse 1.5s infinite;
+            z-index: 20;
         }
-        @keyframes pulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
+        @keyframes dropFall {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(600px) scale(0.5); }
+        }
 
-        /* Shake Animation */
-        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
-        @keyframes shake { 10%, 90% { transform: translate3d(-2px, 0, 0); } 20%, 80% { transform: translate3d(4px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-6px, 0, 0); } 40%, 60% { transform: translate3d(6px, 0, 0); } }
-
-        /* WhatsApp Button */
-        .wa-btn {
-            background: #25D366; color: white; padding: 12px 25px;
-            border-radius: 50px; text-decoration: none; font-family: 'Poppins'; 
-            font-size: 0.9rem; margin-top: 15px; font-weight: bold;
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        /* TEXT STYLES */
+        .quote {
+            position: absolute; bottom: 50px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.8rem;
+            color: #d4af37;
+            text-shadow: 0 0 10px rgba(0,0,0,0.8);
+            width: 100%; text-align: center;
+            pointer-events: none;
+            transition: opacity 0.5s;
         }
         
-        /* Floating Hearts */
-        .heart-particle { position: absolute; font-size: 24px; animation: floatUp 1s ease-out forwards; pointer-events: none; z-index: 100; }
-        @keyframes floatUp { to { transform: translateY(-100px) scale(1.5); opacity: 0; } }
+        .instruction {
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;
+            margin-top: 10px; opacity: 0.7; animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+        /* FINAL MESSAGE */
+        .final-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            color: #d4af37;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+        
+        .sub-final {
+            font-size: 1rem; color: #ccc; margin-bottom: 30px;
+        }
+
+        .wa-btn {
+            background: linear-gradient(45deg, #d4af37, #fcf6ba, #d4af37);
+            color: #3e2723; padding: 15px 40px; border-radius: 50px;
+            text-decoration: none; font-weight: bold; font-size: 1.1rem;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
 
     </style>
 </head>
 <body>
 
-    <div class="glow"></div>
+    <div class="glow-bg"></div>
 
-    <div class="stage-container">
+    <div class="bar-container">
 
-        <div class="layer layer-core" id="layer4">
-            <div class="photo-area"></div>
-            <div class="letter-area">
-                <p>You broke down my walls...</p>
-                <p>You melted my heart...</p>
-                <p>Now I am all yours.</p>
-                <p><b>Happy Chocolate Day! 🍫</b></p>
-                <a href="#" id="wa-link" class="wa-btn">I Found You! ❤️</a>
+        <div class="layer liquid-layer" id="layer-final">
+            <h1 class="final-text">I Love You</h1>
+            <p class="sub-final">You are my sweetest addiction.</p>
+            <a href="#" id="wa-link" class="wa-btn">Send Love ❤️</a>
+        </div>
+
+        <div class="layer chocolate" id="layer-choco" 
+             onmousedown="startMelting()" onmouseup="stopMelting()" 
+             ontouchstart="startMelting()" ontouchend="stopMelting()">
+            <div class="choco-square"></div><div class="choco-square"></div><div class="choco-square"></div>
+            <div class="choco-square"></div><div class="choco-square"></div><div class="choco-square"></div>
+            <div class="choco-square"></div><div class="choco-square"></div><div class="choco-square"></div>
+            <div class="choco-square"></div><div class="choco-square"></div><div class="choco-square"></div>
+            <div class="choco-square"></div><div class="choco-square"></div><div class="choco-square"></div>
+        </div>
+
+        <div class="layer foil" id="layer-foil" onclick="removeFoil()">
+            <div style="text-align:center; padding:20px;">
+                <h2 style="font-family:'Great Vibes'; font-size:2.5rem; color:#333;">Silver Love</h2>
+                <p style="color:#555; font-size:0.9rem; margin-top:10px;">Protected with care.</p>
             </div>
+            <div class="instruction" style="color:#333; position:absolute; bottom:30px;">Tap to Peel Foil</div>
         </div>
 
-        <div class="layer layer-melt" id="layer3" 
-             onmousedown="startMelt()" onmouseup="stopMelt()" 
-             ontouchstart="startMelt()" ontouchend="stopMelt()">
-            <div class="melt-progress" id="melt-overlay"></div>
-            <h2 style="position:relative; z-index:2;">Soft Inside</h2>
-            <div class="instruction" style="z-index:2;">Hold to Melt</div>
-        </div>
-
-        <div class="layer layer-shell" id="layer2" onclick="crackShell()">
-            <h2>Tough Outside</h2>
-            <div class="instruction">Tap to Crack</div>
-            <svg class="crack-svg" viewBox="0 0 100 100" id="cracks">
-                <path class="crack-path" d="M50 10 L40 40 L70 60 L30 90" />
-                <path class="crack-path" d="M10 50 L40 50 L60 40 L90 50" />
-            </svg>
-        </div>
-
-        <div class="layer layer-foil" id="layer1">
-            <div class="sticker">For You</div>
-            <div class="instruction">Swipe Right ➤</div>
+        <div class="layer wrapper" id="layer-wrapper" onclick="removeWrapper()">
+            <div class="brand-text">You & Me</div>
+            <p style="text-align:center; font-style:italic; opacity:0.9;">Premium Edition</p>
+            <div class="instruction" style="position:absolute; bottom:30px;">Tap to Unwrap</div>
         </div>
 
     </div>
+
+    <div class="quote" id="quote-text">A love as sweet as this...</div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         // --- CONFIG ---
         const yourPhoneNumber = "917795253497"; 
 
-        // --- LAYER 1: SWIPE LOGIC (FIXED) ---
-        const layer1 = document.getElementById('layer1');
-        let startX = 0;
-        let currentX = 0;
-        let isDragging = false;
-
-        // Touch Events
-        layer1.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            isDragging = true;
-            layer1.style.transition = 'none'; // Remove animation for instant follow
-        });
-
-        layer1.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            currentX = e.touches[0].clientX;
-            let diff = currentX - startX;
-            if (diff > 0) { // Only allow swiping right
-                layer1.style.transform = `translateX(${diff}px) rotate(${diff/15}deg)`;
-            }
-        });
-
-        layer1.addEventListener('touchend', (e) => {
-            isDragging = false;
-            layer1.style.transition = 'transform 0.3s ease-out'; // Add animation back for snap
-            let diff = currentX - startX;
-            
-            if (diff > 120) { // Threshold to swipe away
-                layer1.style.transform = `translateX(150vw) rotate(45deg)`;
-                setTimeout(() => layer1.style.display = 'none', 300);
-            } else {
-                layer1.style.transform = `translateX(0px) rotate(0deg)`; // Snap back
-            }
-        });
+        // Elements
+        const wrapper = document.getElementById('layer-wrapper');
+        const foil = document.getElementById('layer-foil');
+        const chocolate = document.getElementById('layer-choco');
+        const finalLayer = document.getElementById('layer-final');
+        const quote = document.getElementById('quote-text');
         
-        // --- FALLBACK CLICK FOR LAYER 1 ---
-        // If swipe fails, clicking the sticker works too
-        document.querySelector('.sticker').addEventListener('click', () => {
-             layer1.style.transition = 'transform 0.5s ease-out';
-             layer1.style.transform = `translateX(150vw) rotate(45deg)`;
-             setTimeout(() => layer1.style.display = 'none', 500);
-        });
-
-
-        // --- LAYER 2: CRACK LOGIC ---
-        const layer2 = document.getElementById('layer2');
-        const cracks = document.getElementById('cracks');
-        let taps = 0;
-
-        function crackShell() {
-            taps++;
-            
-            // Haptic
+        // --- STEP 1: UNWRAP ---
+        function removeWrapper() {
+            wrapper.classList.add('slide-up');
+            // Sound effect trigger (logic only)
             if(navigator.vibrate) navigator.vibrate(50);
             
-            // Shake
-            layer2.classList.remove('shake');
-            void layer2.offsetWidth; 
-            layer2.classList.add('shake');
-
-            // Show Cracks
-            if (taps === 2) cracks.style.opacity = 0.4;
-            if (taps === 4) cracks.style.opacity = 0.8;
-            
-            if (taps >= 6) {
-                // Shatter
-                createParticles('🍫');
-                layer2.style.transform = "scale(1.2)";
-                layer2.style.opacity = "0";
-                setTimeout(() => layer2.style.display = 'none', 300);
-            }
+            setTimeout(() => {
+                quote.style.opacity = 0;
+                setTimeout(() => {
+                    quote.innerText = "Peel away the layers...";
+                    quote.style.opacity = 1;
+                }, 500);
+            }, 200);
         }
 
+        // --- STEP 2: PEEL FOIL ---
+        function removeFoil() {
+            foil.classList.add('peel-off');
+            if(navigator.vibrate) navigator.vibrate(50);
 
-        // --- LAYER 3: MELT LOGIC ---
-        const layer3 = document.getElementById('layer3');
-        const meltOverlay = document.getElementById('melt-overlay');
-        let heat = 0;
+            setTimeout(() => {
+                quote.style.opacity = 0;
+                setTimeout(() => {
+                    quote.innerText = "This is my heart... Hold to melt it.";
+                    quote.style.opacity = 1;
+                }, 500);
+            }, 200);
+        }
+
+        // --- STEP 3: MELT CHOCOLATE ---
+        let isMelting = false;
+        let meltLevel = 0;
         let meltInterval;
-        let holding = false;
 
-        function startMelt() {
-            holding = true;
-            meltInterval = setInterval(() => {
-                if(!holding) return;
-                heat += 2;
-                meltOverlay.style.opacity = heat / 100;
-                
-                if(heat % 10 === 0) createParticles('❤️');
-
-                if (heat >= 100) {
-                    finish();
-                }
-            }, 30);
-        }
-
-        function stopMelt() {
-            holding = false;
-            clearInterval(meltInterval);
-            // Optional: Cool down if released
-            // heat = 0; meltOverlay.style.opacity = 0; 
-        }
-
-        function finish() {
-            clearInterval(meltInterval);
-            layer3.style.opacity = 0;
-            setTimeout(() => layer3.style.display = 'none', 500);
+        function startMelting() {
+            isMelting = true;
+            quote.innerText = "You melt me completely...";
             
-            // Confetti
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff0a54', '#d4af37'] });
+            meltInterval = setInterval(() => {
+                if(!isMelting) return;
+                
+                meltLevel++;
+                
+                // 1. Fade out the solid bar
+                chocolate.style.opacity = (100 - meltLevel) / 100;
+
+                // 2. Create Drops (The "Water" effect)
+                createDrop();
+
+                // 3. Reveal Final
+                if (meltLevel >= 100) {
+                    finishMelt();
+                }
+            }, 40);
+        }
+
+        function stopMelting() {
+            isMelting = false;
+            clearInterval(meltInterval);
+        }
+
+        function createDrop() {
+            const drop = document.createElement('div');
+            drop.classList.add('drip');
+            
+            // Random position within container
+            const rect = chocolate.getBoundingClientRect();
+            const x = Math.random() * rect.width;
+            const y = Math.random() * rect.height;
+            
+            drop.style.left = x + 'px';
+            drop.style.top = y + 'px';
+            
+            // Varied size for realism
+            const size = Math.random() * 10 + 5 + 'px';
+            drop.style.width = size;
+            drop.style.height = size; /* Elongate for drip look */
+            drop.style.borderRadius = "50% 50% 50% 50% / 60% 60% 40% 40%";
+            
+            drop.style.animation = "dropFall 1s linear forwards";
+            
+            chocolate.appendChild(drop);
+            
+            // Remove after fall
+            setTimeout(() => drop.remove(), 1000);
+        }
+
+        function finishMelt() {
+            clearInterval(meltInterval);
+            chocolate.style.display = 'none';
+            finalLayer.style.opacity = 1;
+            
+            quote.style.opacity = 0; // Hide bottom quote
+            
+            // Celebration
+            confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#d4af37', '#fff'] });
 
             // Set Link
-            const msg = "I swiped, cracked, and melted your heart! 🍫❤️ Sending you hugs now!";
+            const msg = "I melted your chocolate heart! 🍫❤️ You are my favorite treat. Happy Chocolate Day!";
             document.getElementById('wa-link').href = `https://wa.me/${yourPhoneNumber}?text=${encodeURIComponent(msg)}`;
-        }
-
-        // --- PARTICLES ---
-        function createParticles(char) {
-            const p = document.createElement('div');
-            p.innerText = char;
-            p.classList.add('heart-particle');
-            p.style.left = Math.random() * 80 + 10 + '%';
-            p.style.top = '50%';
-            document.body.appendChild(p);
-            setTimeout(() => p.remove(), 1000);
         }
 
     </script>
