@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>My Sweetest ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <title>For My Love 🍫</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -12,160 +12,213 @@
         body {
             height: 100vh;
             width: 100vw;
-            background: #1a0f0a; /* Dark Chocolate */
-            font-family: 'Poppins', sans-serif;
+            background: #120a08; /* Deep dark chocolate background */
+            font-family: 'Lato', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            color: #eaddcf;
+            color: white;
+            position: relative;
         }
 
-        /* Ambient Glow */
-        .glow {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 100vw; height: 100vh;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(0,0,0,1) 80%);
-            pointer-events: none; z-index: 0;
+        /* Romantic Glow Background */
+        .ambient-light {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(160, 82, 45, 0.3) 0%, rgba(0,0,0,1) 80%);
+            pointer-events: none;
+            z-index: 1;
         }
 
+        /* TYPOGRAPHY */
         h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.2rem;
+            font-family: 'Great Vibes', cursive;
+            font-size: 3rem;
             color: #d4af37; /* Gold */
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-            margin-bottom: 5px;
-            z-index: 10;
-        }
-
-        p.sub-text {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.7);
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
             margin-bottom: 20px;
             z-index: 10;
+            opacity: 0;
+            animation: fadeIn 2s forwards 0.5s;
         }
 
-        /* THE PHOTO CONTAINER */
-        .mosaic-container {
+        p.hint {
+            font-size: 1rem;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 40px;
+            z-index: 10;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeIn 2s forwards 1.5s;
+        }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* --- THE HEART CONTAINER --- */
+        .container {
             position: relative;
-            width: 320px;
-            height: 400px; /* Adjust if your photo is landscape */
-            border: 4px solid #d4af37;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
-            overflow: hidden;
+            width: 300px;
+            height: 300px;
             z-index: 5;
+        }
+
+        /* 1. THE HIDDEN PHOTO (Bottom Layer) */
+        .hidden-photo {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
             
-            /* --- REPLACE THIS LINK WITH YOUR PHOTO --- */
-            background-image: url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1000&auto=format&fit=crop'); 
+            /* --- REPLACE WITH YOUR PHOTO LINK HERE --- */
+            background-image: url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1000&auto=format&fit=crop');
+            
             background-size: cover;
             background-position: center;
+            
+            /* Clip it to a heart shape */
+            mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+            mask-size: contain;
+            -webkit-mask-size: contain;
+            mask-repeat: no-repeat;
+            -webkit-mask-repeat: no-repeat;
+            mask-position: center;
+            -webkit-mask-position: center;
+            
+            z-index: 1;
+            transform: scale(0.95); /* Slight inset */
         }
 
-        /* THE GRID */
-        .grid {
-            width: 100%; height: 100%;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(4, 1fr);
-        }
-
-        .chocolate-tile {
-            background: linear-gradient(135deg, #5d4037, #3e2723);
-            border: 1px solid #795548;
-            position: relative;
+        /* 2. THE CHOCOLATE COVER (Top Layer) */
+        .choco-cover {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2;
             cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.3s, opacity 0.5s;
+            transition: opacity 0.2s;
         }
 
-        /* Decorative Heart on Tile */
-        .chocolate-tile::before {
-            content: '❤️';
-            font-size: 1.2rem;
-            opacity: 0.5;
-            filter: grayscale(100%);
+        /* SVG Heart Style */
+        .choco-heart-svg {
+            width: 100%; height: 100%;
+            fill: #5d4037; /* Milk Chocolate */
+            stroke: #3e2723;
+            stroke-width: 1;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+            transition: fill 3s; /* Transition for melting color change */
         }
 
-        /* Eaten State */
-        .chocolate-tile.eaten {
-            transform: scale(0.5) rotate(45deg);
+        /* Drip Animation Class (Added via JS) */
+        .melting {
+            animation: meltShake 0.5s infinite;
+        }
+
+        @keyframes meltShake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            50% { transform: translate(-1px, -1px) rotate(1deg); }
+            100% { transform: translate(1px, 1px) rotate(0deg); }
+        }
+
+        /* PROGRESS BAR (Heat Meter) */
+        .heat-meter {
+            position: absolute;
+            bottom: -50px; left: 50%;
+            transform: translateX(-50%);
+            width: 80%; height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
             opacity: 0;
-            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+        
+        .heat-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff416c, #ff4b2b);
+            box-shadow: 0 0 10px #ff4b2b;
+            transition: width 0.1s;
         }
 
-        /* Pop-up Text */
-        .pop-text {
+        /* MESSAGE OVERLAY */
+        #final-msg {
             position: absolute;
-            color: #ffcc00;
-            font-weight: bold;
-            font-size: 1.1rem;
-            pointer-events: none;
-            animation: floatUp 1s forwards;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            bottom: 50px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s;
             z-index: 20;
-            white-space: nowrap;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-60px) scale(1.2); opacity: 0; }
-        }
-
-        /* FINAL MESSAGE (Typewriter) */
-        .final-msg {
-            position: absolute;
-            bottom: 30px;
             width: 90%;
             background: rgba(0,0,0,0.8);
             padding: 20px;
             border-radius: 15px;
-            text-align: center;
             border: 1px solid #d4af37;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 1s;
-            z-index: 50;
-        }
-
-        .final-msg.visible {
-            opacity: 1;
-            pointer-events: all;
         }
 
         .whatsapp-btn {
             background: #25D366;
             color: white;
-            padding: 12px 25px;
+            padding: 12px 30px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
             display: inline-block;
             margin-top: 15px;
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
             font-size: 0.9rem;
+            box-shadow: 0 0 20px rgba(37, 211, 102, 0.4);
+        }
+
+        /* HEAT PARTICLES */
+        .steam {
+            position: absolute;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            width: 10px; height: 10px;
+            filter: blur(4px);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+        }
+        
+        @keyframes rise {
+            0% { opacity: 0; transform: translateY(0) scale(1); }
+            50% { opacity: 0.8; }
+            100% { opacity: 0; transform: translateY(-50px) scale(2); }
         }
 
     </style>
 </head>
 <body>
 
-    <div class="glow"></div>
-    <h1>Happy Chocolate Day 🍫</h1>
-    <p class="sub-text">Eat the chocolates to see what I love...</p>
+    <div class="ambient-light"></div>
 
-    <div class="mosaic-container">
-        <div class="grid" id="grid">
-            </div>
+    <h1>My Heart is Yours</h1>
+    <p class="hint">Hold to Melt my Heart...</p>
+
+    <div class="container">
+        <div class="hidden-photo"></div>
+
+        <div class="choco-cover" id="choco-heart" 
+             onmousedown="startHeat()" onmouseup="stopHeat()" 
+             ontouchstart="startHeat()" ontouchend="stopHeat()">
+            
+            <svg class="choco-heart-svg" id="heart-svg" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        </div>
+
+        <div class="heat-meter" id="meter">
+            <div class="heat-fill" id="fill"></div>
+        </div>
     </div>
 
-    <div class="final-msg" id="final">
-        <h3 style="color: #d4af37; margin-bottom: 10px; font-family: 'Dancing Script'; font-size: 1.8rem;">You are my Sweetest Treat</h3>
-        <p id="typewriter-text" style="font-size: 0.9rem; line-height: 1.5;"></p>
-        <a href="#" id="whatsapp-link" class="whatsapp-btn">I'm blushing! 🙈</a>
+    <div id="final-msg">
+        <h2 style="color: #d4af37; font-family: 'Great Vibes'; margin-bottom: 10px;">You Melt Me...</h2>
+        <p style="font-size: 0.9rem; line-height: 1.5; color: #ddd;">
+            On the outside, I act tough.<br>But one touch from you, and I melt completely.
+        </p>
+        <a href="#" id="whatsapp-link" class="whatsapp-btn">I Melted It! ❤️</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -173,89 +226,115 @@
         // --- CONFIG ---
         const yourPhoneNumber = "917795253497"; 
 
-        // FLIRTY TEXTS (Appears when she taps)
-        const sweetWords = [
-            "So Pretty 😍", "My Love ❤️", "Cutie! 😘", 
-            "Gorgeous ✨", "Best Smile", "Angel 😇", 
-            "Mine 💖", "Perfect", "Sweetest 🍬", 
-            "Love U", "Beautiful", "Keep Going!"
-        ];
+        // Variables
+        const heart = document.getElementById('choco-heart');
+        const heartSvg = document.getElementById('heart-svg');
+        const fill = document.getElementById('fill');
+        const meter = document.getElementById('meter');
+        const finalMsg = document.getElementById('final-msg');
+        
+        let heatLevel = 0;
+        let isHolding = false;
+        let interval;
+        let complete = false;
 
-        // THE LOVE LETTER (Appears at the end)
-        const letterText = "Chocolates are sweet, but nothing is sweeter than seeing you smile. You are the best thing that ever happened to me. I love you! ❤️";
+        // Start Warming Up
+        function startHeat() {
+            if (complete) return;
+            isHolding = true;
+            meter.style.opacity = 1;
+            heart.classList.add('melting'); // Shake effect
 
-        const grid = document.getElementById('grid');
-        const finalScreen = document.getElementById('final');
-        let eatenCount = 0;
-        const totalTiles = 12; // 3x4 grid
+            interval = setInterval(() => {
+                if (!isHolding) return;
 
-        // Create Grid
-        for(let i=0; i<totalTiles; i++) {
-            const tile = document.createElement('div');
-            tile.classList.add('chocolate-tile');
-            tile.addEventListener('click', (e) => eatChocolate(e, tile));
-            grid.appendChild(tile);
+                heatLevel += 1;
+                updateVisuals();
+
+                // Generate Steam Particles
+                createSteam();
+
+                // Check Completion
+                if (heatLevel >= 100) {
+                    finishMelting();
+                }
+            }, 30); // Speed of melting
         }
 
-        function eatChocolate(e, tile) {
-            if(tile.classList.contains('eaten')) return;
+        // Stop Warming (Cool Down)
+        function stopHeat() {
+            if (complete) return;
+            isHolding = false;
+            heart.classList.remove('melting');
 
-            // 1. Visual Eaten Effect
-            tile.classList.add('eaten');
-            eatenCount++;
+            // Slowly cool down if not finished
+            const coolDown = setInterval(() => {
+                if (isHolding || heatLevel <= 0 || complete) {
+                    clearInterval(coolDown);
+                    return;
+                }
+                heatLevel -= 2;
+                updateVisuals();
+            }, 20);
+        }
 
-            // 2. Pop-up Text Effect
-            showFloatingText(e.clientX, e.clientY);
+        function updateVisuals() {
+            // Update Bar
+            fill.style.width = heatLevel + "%";
+            
+            // Fade out Chocolate
+            // Opacity goes from 1 to 0
+            heart.style.opacity = (100 - heatLevel) / 100;
 
-            // 3. Check Win
-            if(eatenCount === totalTiles) {
-                setTimeout(revealSecret, 800);
+            // Change Color (Dark Brown -> Red Hot)
+            if (heatLevel > 50) {
+                heartSvg.style.fill = "#8B0000"; // Glow red when hot
+                heartSvg.style.filter = `drop-shadow(0 0 ${heatLevel/5}px #ff4b2b)`;
+            } else {
+                heartSvg.style.fill = "#5d4037"; // Back to chocolate
+                heartSvg.style.filter = "drop-shadow(0 10px 20px rgba(0,0,0,0.5))";
             }
         }
 
-        function showFloatingText(x, y) {
-            const text = document.createElement('div');
-            text.classList.add('pop-text');
-            text.innerText = sweetWords[Math.floor(Math.random() * sweetWords.length)];
+        function createSteam() {
+            const steam = document.createElement('div');
+            steam.classList.add('steam');
             
-            // Random slight offset so they don't overlap perfectly
-            const randomX = (Math.random() - 0.5) * 40;
-            text.style.left = (x + randomX) + 'px';
-            text.style.top = y + 'px';
+            // Random position near heart
+            const rect = heart.getBoundingClientRect();
+            const x = rect.left + Math.random() * rect.width;
+            const y = rect.top + Math.random() * (rect.height / 2);
             
-            document.body.appendChild(text);
-            setTimeout(() => text.remove(), 1000);
+            steam.style.left = x + 'px';
+            steam.style.top = y + 'px';
+            steam.style.animation = "rise 1s forwards";
+            
+            document.body.appendChild(steam);
+            setTimeout(() => steam.remove(), 1000);
         }
 
-        function revealSecret() {
-            // Show Final Modal
-            finalScreen.classList.add('visible');
-            
-            // Big Confetti Explosion
-            confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#d4af37', '#ffffff'] });
+        function finishMelting() {
+            complete = true;
+            clearInterval(interval);
+            heart.style.display = 'none'; // Remove chocolate entirely
+            meter.style.opacity = 0; // Hide meter
 
-            // Start Typewriter
-            typeWriterEffect(letterText, 'typewriter-text');
+            // Celebration
+            fireConfetti();
+            
+            // Show Message
+            setTimeout(() => {
+                finalMsg.style.opacity = 1;
+                finalMsg.style.pointerEvents = 'all';
+            }, 500);
 
             // WhatsApp Link
-            const msg = "I ate all the chocolates and saw the photo! 📸❤️ You made me blush! Happy Chocolate Day!";
+            const msg = "I melted your heart and saw the photo! 📸🍫 You are so cheesy but I love it! Happy Chocolate Day! ❤️";
             document.getElementById('whatsapp-link').href = `https://wa.me/${yourPhoneNumber}?text=${encodeURIComponent(msg)}`;
         }
 
-        // Typewriter Effect
-        function typeWriterEffect(text, elementId) {
-            let i = 0;
-            const element = document.getElementById(elementId);
-            element.innerHTML = "";
-            
-            function type() {
-                if (i < text.length) {
-                    element.innerHTML += text.charAt(i);
-                    i++;
-                    setTimeout(type, 50); // Speed of typing
-                }
-            }
-            type();
+        function fireConfetti() {
+            confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#d4af37', '#ff4b2b'] });
         }
     </script>
 </body>
