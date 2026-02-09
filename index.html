@@ -3,245 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>You & Me 🍫</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Great+Vibes&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <title>Biometric Scan 🧬</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
 
         body {
             height: 100vh;
             width: 100vw;
-            background: #0f0505;
-            font-family: 'Montserrat', sans-serif;
+            background-color: #020205;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            font-family: 'Share Tech Mono', monospace;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            color: #00f3ff; /* Cyan */
             overflow: hidden;
-            color: #fff;
-        }
-
-        /* Luxury Background */
-        .bg-lux {
-            position: absolute; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #2e1a16 0%, #000 100%);
-            z-index: 0;
-        }
-
-        /* --- THE STAGE --- */
-        .stage {
             position: relative;
-            width: 320px;
-            height: 550px;
+        }
+
+        /* Ambient Glow */
+        .vignette {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: radial-gradient(circle, transparent 40%, #000 90%);
+            pointer-events: none; z-index: 1;
+        }
+
+        /* --- SCANNER HUD --- */
+        .hud-container {
+            position: relative;
             z-index: 10;
-            perspective: 1200px;
-        }
-
-        /* COMMON LAYER PROPS */
-        .layer {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            border-radius: 12px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-            transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
-            transform-style: preserve-3d;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            backface-visibility: hidden;
-        }
-
-        /* --- LAYER 1: THE WRAPPER (Red & Gold) --- */
-        .wrapper {
-            background: linear-gradient(135deg, #800020 0%, #4a0012 100%);
-            z-index: 5;
-            border: 2px solid #b8860b;
-            cursor: pointer;
-        }
-        
-        .wrapper::before {
-            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
-            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
-        }
-
-        .brand-box {
-            border: 3px solid #d4af37;
-            padding: 20px 40px;
             text-align: center;
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            width: 320px;
         }
 
-        .brand-name {
-            font-family: 'Cinzel', serif;
-            font-size: 2.5rem;
-            color: #d4af37;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
             letter-spacing: 2px;
+            text-shadow: 0 0 10px #00f3ff;
+            margin-bottom: 5px;
         }
 
-        .tear-strip {
-            position: absolute; top: -10px; right: 20px;
-            width: 40px; height: 120%;
-            background: rgba(0,0,0,0.2);
-            border-left: 1px dashed rgba(255,255,255,0.3);
-            border-right: 1px dashed rgba(255,255,255,0.3);
+        .status {
+            font-size: 0.9rem;
+            color: rgba(0, 243, 255, 0.7);
+            margin-bottom: 40px;
+            height: 20px; /* Prevent jump */
         }
 
-        /* --- LAYER 2: SILVER FOIL --- */
-        .foil {
-            background: linear-gradient(135deg, #dcdcdc, #888, #fff, #999);
-            z-index: 4;
+        /* FINGERPRINT AREA */
+        .scanner-ring {
+            position: relative;
+            width: 180px; height: 180px;
+            margin: 0 auto;
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+            transition: all 0.3s;
             cursor: pointer;
         }
-        
-        /* Crinkle Effect */
-        .foil::after {
-            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
-            background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 2px, transparent 2px, transparent 4px);
-            mix-blend-mode: multiply;
+
+        .fingerprint {
+            font-size: 5rem;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+            color: #00f3ff;
         }
 
-        /* --- LAYER 3: THE CHOCOLATE (Melting Target) --- */
-        .chocolate {
-            background: #3e2723;
-            z-index: 3;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
-            padding: 10px;
-            align-content: start;
-        }
-
-        .choco-block {
-            height: 80px;
-            background: linear-gradient(145deg, #5d4037, #2d1e1b);
-            border-radius: 4px;
-            box-shadow: inset 2px 2px 5px rgba(255,255,255,0.1), inset -2px -2px 10px rgba(0,0,0,0.5);
-            display: flex; justify-content: center; align-items: center;
-            font-size: 1.5rem; color: rgba(0,0,0,0.3);
-        }
-
-        /* --- LAYER 4: THE REVEAL (Photo & Letter) --- */
-        .reveal-layer {
-            background: #fff0f5;
-            z-index: 1;
-            padding: 0;
-            text-align: center;
-        }
-
-        .photo-frame {
-            width: 100%; height: 55%;
-            /* INSERT YOUR PHOTO LINK HERE */
-            background-image: url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1000&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-        
-        .photo-frame::after {
-            content: ''; position: absolute; bottom:0; left:0; width:100%; height:50%;
-            background: linear-gradient(to top, #fff0f5, transparent);
-        }
-
-        .letter {
-            height: 45%;
-            padding: 20px;
-            display: flex; flex-direction: column; justify-content: center;
-            color: #4a0404;
-        }
-
-        .letter h2 { font-family: 'Great Vibes'; font-size: 2.5rem; margin-bottom: 10px; color: #b8860b; }
-        .letter p { font-size: 0.9rem; line-height: 1.6; }
-
-        /* --- ANIMATIONS --- */
-        .slide-down-off { transform: translateY(120%) rotate(-5deg); opacity: 0; }
-        .crumple-off { transform: scale(0.8) rotate(10deg); opacity: 0; }
-        
-        /* LIQUID PHYSICS */
-        .drip {
-            position: absolute;
-            background: #3e2723;
-            width: 8px; height: 8px;
-            border-radius: 50%;
+        /* SCANNING ANIMATION (Hidden by default) */
+        .scan-beam {
+            position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+            background: #00f3ff;
+            box-shadow: 0 0 15px #00f3ff;
+            opacity: 0;
             pointer-events: none;
-            z-index: 20;
-        }
-        
-        /* The animation for the liquid falling */
-        @keyframes liquidFall {
-            0% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(300px) scale(1.2); }
-            100% { transform: translateY(600px) scale(0.5); opacity: 0; }
         }
 
-        /* UI TEXT */
-        .hint-text {
-            position: absolute; bottom: 30px;
-            font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
-            color: rgba(255,255,255,0.7);
-            animation: pulse 2s infinite;
-            pointer-events: none;
+        /* Active State */
+        .scanning .scan-beam {
+            opacity: 1;
+            animation: scanMove 1.5s linear infinite;
+        }
+        .scanning .fingerprint { opacity: 1; text-shadow: 0 0 15px #00f3ff; }
+        .scanning .scanner-ring { border-color: #00f3ff; box-shadow: 0 0 40px rgba(0, 243, 255, 0.4); }
+
+        @keyframes scanMove {
+            0% { top: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        /* PROGRESS METRICS */
+        .metrics {
+            margin-top: 40px;
+            text-align: left;
+            width: 100%;
+            padding: 0 20px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .metric-row {
+            display: flex; justify-content: space-between;
+            margin-bottom: 10px; font-size: 0.8rem;
+        }
+        .bar-bg { width: 100%; height: 4px; background: rgba(0,243,255,0.2); margin-top: 5px; }
+        .bar-fill { height: 100%; background: #00f3ff; width: 0%; transition: width 0.2s; box-shadow: 0 0 5px #00f3ff; }
+
+        /* --- RESULT CARD (Hidden) --- */
+        .result-overlay {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.95);
             z-index: 50;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.5s;
+            padding: 30px;
         }
-        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+        
+        .result-box {
+            border: 2px solid #ff0055; /* Alert Red/Pink */
+            padding: 30px;
+            text-align: center;
+            background: rgba(20, 0, 5, 0.8);
+            box-shadow: 0 0 50px rgba(255, 0, 85, 0.2);
+            transform: scale(0.9);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 400px;
+        }
 
-        /* BUTTON */
-        .wa-btn {
-            background: #25D366; color: white; padding: 12px 30px;
-            border-radius: 50px; text-decoration: none; font-weight: bold;
-            margin-top: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            font-size: 0.9rem;
+        .alert-header {
+            color: #ff0055; font-family: 'Orbitron'; font-size: 1.5rem; letter-spacing: 2px;
+            border-bottom: 1px solid #ff0055; padding-bottom: 10px; margin-bottom: 20px;
+            animation: blink 1s infinite;
         }
+        @keyframes blink { 50% { opacity: 0.5; } }
+
+        .diagnosis-text {
+            color: #fff; font-size: 1rem; line-height: 1.6; margin-bottom: 25px;
+        }
+
+        .prescription-btn {
+            background: #ff0055; color: #fff; text-decoration: none;
+            padding: 15px 30px; font-family: 'Orbitron'; font-weight: bold;
+            display: inline-block; box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
+            transition: transform 0.2s; border: none; cursor: pointer;
+        }
+        .prescription-btn:active { transform: scale(0.95); }
 
     </style>
 </head>
 <body>
 
-    <div class="bg-lux"></div>
+    <div class="vignette"></div>
 
-    <div class="stage">
-        
-        <div class="layer reveal-layer">
-            <div class="photo-frame"></div>
-            <div class="letter">
-                <h2>I Love You</h2>
-                <p>You melted my heart just like this chocolate.</p>
-                <p>You are my favorite flavor.</p>
-                <a href="#" id="wa-link" class="wa-btn">I Melted It! ❤️</a>
+    <div class="hud-container" id="scanner-ui">
+        <h1>BIOMETRIC SCAN</h1>
+        <div class="status" id="status-text">WAITING FOR INPUT...</div>
+
+        <div class="scanner-ring" id="fingerprint-btn" 
+             onmousedown="startScan()" onmouseup="stopScan()" 
+             ontouchstart="startScan()" ontouchend="stopScan()">
+            <div class="scan-beam"></div>
+            <div class="fingerprint">☝️</div> 
             </div>
-        </div>
 
-        <div class="layer chocolate" id="layer-choco" 
-             onmousedown="startLiquid()" onmouseup="stopLiquid()" 
-             ontouchstart="startLiquid()" ontouchend="stopLiquid()">
-            <div class="choco-block">❤</div><div class="choco-block"></div><div class="choco-block"></div>
-            <div class="choco-block"></div><div class="choco-block">❤</div><div class="choco-block"></div>
-            <div class="choco-block"></div><div class="choco-block"></div><div class="choco-block">❤</div>
-            <div class="choco-block"></div><div class="choco-block">❤</div><div class="choco-block"></div>
-            <div class="choco-block">❤</div><div class="choco-block"></div><div class="choco-block"></div>
+        <div class="metrics" id="metrics-panel">
+            <div class="metric-row">
+                <span>HEART RATE</span> <span id="bpm">0 BPM</span>
+            </div>
+            <div class="bar-bg"><div class="bar-fill" id="bar-1"></div></div>
+            <br>
+            <div class="metric-row">
+                <span>CUTENESS</span> <span id="cute-lvl">0%</span>
+            </div>
+            <div class="bar-bg"><div class="bar-fill" id="bar-2"></div></div>
+            <br>
+            <div class="metric-row">
+                <span>LOVE LEVELS</span> <span>CRITICAL</span>
+            </div>
+            <div class="bar-bg"><div class="bar-fill" id="bar-3"></div></div>
+        </div>
+    </div>
+
+    <div class="result-overlay" id="result-screen">
+        <div class="result-box">
+            <div class="alert-header">⚠️ DIAGNOSIS COMPLETE</div>
             
-            <div class="hint-text" id="melt-hint">Hold to Melt</div>
-        </div>
-
-        <div class="layer foil" id="layer-foil" onclick="peelFoil()">
-            <h2 style="color:#555; font-family:'Cinzel';">Silver Edition</h2>
-            <div class="hint-text" style="color:#555">Tap to Peel</div>
-        </div>
-
-        <div class="layer wrapper" id="layer-wrapper" onclick="tearWrapper()">
-            <div class="tear-strip"></div>
-            <div class="brand-box">
-                <div class="brand-name">You & Me</div>
-                <div style="font-size:0.7rem; letter-spacing:3px; color:#d4af37; margin-top:5px;">PREMIUM DARK</div>
+            <div class="diagnosis-text">
+                <p><b>SUBJECT:</b> The Prettiest Girl</p>
+                <br>
+                <p><b>CONDITION:</b> Patient is suffering from acute <i>"Lack-of-Me-itis"</i>.</p>
+                <br>
+                <p><b>PRESCRIPTION:</b> Immediate intake of Chocolates and Cuddles.</p>
             </div>
-            <div class="hint-text">Tap to Unwrap</div>
-        </div>
 
+            <a href="#" id="wa-link" class="prescription-btn">ACCEPT TREATMENT 💊</a>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -250,103 +215,105 @@
         const yourPhoneNumber = "917795253497"; 
 
         // ELEMENTS
-        const wrapper = document.getElementById('layer-wrapper');
-        const foil = document.getElementById('layer-foil');
-        const chocolate = document.getElementById('layer-choco');
-        const hint = document.getElementById('melt-hint');
+        const btn = document.getElementById('fingerprint-btn');
+        const ui = document.getElementById('scanner-ui');
+        const status = document.getElementById('status-text');
+        const metrics = document.getElementById('metrics-panel');
+        const resultScreen = document.getElementById('result-screen');
+        
+        // BARS
+        const bar1 = document.getElementById('bar-1');
+        const bar2 = document.getElementById('bar-2');
+        const bar3 = document.getElementById('bar-3');
+        const bpm = document.getElementById('bpm');
+        const cute = document.getElementById('cute-lvl');
 
-        // --- STEP 1: TEAR WRAPPER ---
-        function tearWrapper() {
-            wrapper.classList.add('slide-down-off');
-            if(navigator.vibrate) navigator.vibrate(100);
-        }
+        let isScanning = false;
+        let scanProgress = 0;
+        let scanInterval;
 
-        // --- STEP 2: PEEL FOIL ---
-        function peelFoil() {
-            foil.classList.add('crumple-off');
-            // Play crunchy sound effect simulation via visual shake
-            if(navigator.vibrate) navigator.vibrate([50, 50, 50]);
-        }
+        function startScan() {
+            isScanning = true;
+            ui.classList.add('scanning');
+            metrics.style.opacity = 1;
+            
+            // Haptic Start
+            if(navigator.vibrate) navigator.vibrate(50);
 
-        // --- STEP 3: LIQUID MELT PHYSICS ---
-        let isMelting = false;
-        let meltProgress = 0;
-        let meltInterval;
+            scanInterval = setInterval(() => {
+                if(!isScanning) return;
+                
+                scanProgress += 1; // Speed
+                
+                // Update Bars Randomly for "Tech" effect
+                bar1.style.width = Math.min(scanProgress * 1.5, 100) + "%";
+                bar2.style.width = Math.min(scanProgress * 1.2, 100) + "%";
+                bar3.style.width = Math.min(scanProgress * 0.8, 100) + "%";
 
-        function startLiquid() {
-            isMelting = true;
-            hint.innerText = "Melting...";
-            hint.style.opacity = 1;
+                // Update Numbers
+                bpm.innerText = Math.floor(60 + scanProgress) + " BPM";
+                cute.innerText = Math.floor(scanProgress) + "%";
 
-            meltInterval = setInterval(() => {
-                if(!isMelting) return;
+                // Status Text Logic
+                if(scanProgress < 30) status.innerText = "SCANNING IDENTITY...";
+                else if(scanProgress < 60) status.innerText = "ANALYZING MOOD...";
+                else if(scanProgress < 90) status.innerText = "CALCULATING AFFECTION...";
+                else status.innerText = "COMPILING DIAGNOSIS...";
 
-                meltProgress += 1; // Speed of melt
-
-                // 1. DISSOLVE THE BAR
-                chocolate.style.opacity = (100 - meltProgress) / 100;
-
-                // 2. SPAWN LIQUID DROPS
-                // We spawn multiple drops per tick for a "gushing" effect
-                spawnDrop(); 
-                if(meltProgress % 5 === 0) spawnDrop();
-
-                // 3. COMPLETION
-                if(meltProgress >= 100) {
-                    finishExperience();
+                // Complete
+                if(scanProgress >= 100) {
+                    completeScan();
                 }
 
-            }, 30);
+            }, 40);
         }
 
-        function stopLiquid() {
-            isMelting = false;
-            clearInterval(meltInterval);
-            hint.innerText = "Hold to Melt";
+        function stopScan() {
+            if(scanProgress >= 100) return; // Already done
+
+            isScanning = false;
+            ui.classList.remove('scanning');
+            status.innerText = "SCAN ABORTED. RETRY.";
+            status.style.color = "red";
+            
+            clearInterval(scanInterval);
+            scanProgress = 0;
+            
+            // Reset UI
+            setTimeout(() => {
+                status.innerText = "WAITING FOR INPUT...";
+                status.style.color = "rgba(0, 243, 255, 0.7)";
+                bar1.style.width = "0%";
+                bar2.style.width = "0%";
+                bar3.style.width = "0%";
+                metrics.style.opacity = 0;
+            }, 1000);
         }
 
-        function spawnDrop() {
-            const drop = document.createElement('div');
-            drop.classList.add('drip');
+        function completeScan() {
+            clearInterval(scanInterval);
+            isScanning = false;
             
-            // Randomize position across the width of the bar
-            const rect = chocolate.getBoundingClientRect();
-            const startX = Math.random() * rect.width;
-            const startY = Math.random() * (rect.height / 2); // Start from top half
+            // Success Haptic
+            if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
 
-            drop.style.left = startX + 'px';
-            drop.style.top = startY + 'px';
+            // Hide Scanner
+            ui.style.opacity = 0;
 
-            // Randomize Drop Size
-            const size = Math.random() * 12 + 4 + 'px';
-            drop.style.width = size;
-            drop.style.height = size;
-            
-            // Randomize Shape (teardrop)
-            drop.style.borderRadius = "50% 50% 50% 50% / 60% 60% 40% 40%";
-            drop.style.background = `rgba(62, 39, 35, ${Math.random() * 0.5 + 0.5})`; // Varying opacity
-
-            // Animate
-            drop.style.animation = `liquidFall ${Math.random() * 0.5 + 0.5}s linear forwards`;
-
-            chocolate.appendChild(drop);
-
-            // Cleanup
-            setTimeout(() => drop.remove(), 1000);
-        }
-
-        function finishExperience() {
-            clearInterval(meltInterval);
-            chocolate.style.display = 'none'; // Gone
-            
-            // EXPLOSION
-            confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: ['#d4af37', '#fff', '#3e2723'] });
+            // Show Result
+            setTimeout(() => {
+                resultScreen.style.opacity = 1;
+                resultScreen.style.pointerEvents = 'all';
+                document.querySelector('.result-box').style.transform = 'scale(1)';
+                
+                // Confetti (Pink/Red for love)
+                confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 }, colors: ['#ff0055', '#ffffff'] });
+            }, 500);
 
             // WhatsApp Link
-            const msg = "I melted the You & Me chocolate and found the secret! 🍫❤️ Love you!";
+            const msg = "Dr. Love, I accept the diagnosis! 🧬🍫 I need my prescription (Chocolate & Kisses) immediately! ❤️";
             document.getElementById('wa-link').href = `https://wa.me/${yourPhoneNumber}?text=${encodeURIComponent(msg)}`;
         }
-
     </script>
 </body>
 </html>
