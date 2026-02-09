@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Official Document 📄</title>
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <title>Heart Scan 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Orbitron:wght@500&display=swap" rel="stylesheet">
     
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -12,238 +12,371 @@
         body {
             height: 100vh;
             width: 100vw;
-            background: #111;
-            font-family: 'Montserrat', sans-serif;
-            color: #fff;
+            background: #1a0b10;
+            font-family: 'Nunito', sans-serif;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: #ffb7b2;
+            position: relative;
+        }
+
+        /* Soft Pulse Background */
+        .pulse-bg {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(255, 105, 180, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: heartbeat 2s infinite ease-in-out;
+            z-index: 0;
+            pointer-events: none;
+        }
+        @keyframes heartbeat {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.2; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+        }
+
+        /* --- SCANNER HUD --- */
+        .hud-container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            width: 320px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            color: #ff9eb5;
+            text-shadow: 0 0 10px rgba(255, 158, 181, 0.6);
+            margin-bottom: 30px;
+        }
+
+        /* FINGERPRINT AREA */
+        .scanner-ring {
+            position: relative;
+            width: 160px; height: 160px;
+            margin: 0 auto 40px;
+            border: 2px dashed rgba(255, 183, 178, 0.3);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .fingerprint-icon {
+            font-size: 4rem;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+            filter: drop-shadow(0 0 5px #ff69b4);
+        }
+
+        /* Scanning Beam */
+        .scan-beam {
+            position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: #ff69b4;
+            box-shadow: 0 0 15px #ff69b4, 0 0 30px #ff69b4;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Active State */
+        .scanning .scan-beam {
+            opacity: 1;
+            animation: scanMove 1.5s linear infinite;
+        }
+        .scanning .fingerprint-icon { opacity: 1; color: #ff69b4; }
+        .scanning .scanner-ring { 
+            border-color: #ff69b4; 
+            border-style: solid;
+            box-shadow: 0 0 50px rgba(255, 105, 180, 0.4); 
+            transform: scale(1.05);
+        }
+
+        @keyframes scanMove {
+            0% { top: 10%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 90%; opacity: 0; }
+        }
+
+        /* LIVE LOG TEXT */
+        .log-text {
+            height: 40px;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            color: #fff;
+            text-shadow: 0 0 5px #ff69b4;
+            margin-bottom: 20px;
+        }
+
+        /* PROGRESS BAR */
+        .progress-container {
+            width: 80%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff69b4, #ff9eb5);
+            box-shadow: 0 0 10px #ff69b4;
+            transition: width 0.1s;
+        }
+
+        .hint {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            animation: blink 2s infinite;
+        }
+        @keyframes blink { 50% { opacity: 0.3; } }
+
+
+        /* --- REPORT CARD (Hidden) --- */
+        .report-overlay {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: rgba(20, 10, 15, 0.95);
+            z-index: 50;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.8s;
+            padding: 20px;
+        }
+        
+        .report-card {
+            background: #fff0f5;
+            color: #5a3a4a;
+            width: 100%;
+            max-width: 350px;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(255, 105, 180, 0.3);
+            transform: translateY(50px);
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
             overflow: hidden;
         }
 
-        /* --- SCREEN 1: THE CONTRACT --- */
-        #screen-contract {
-            background: #fff;
-            color: #222;
-            width: 90%;
-            max-width: 350px;
-            padding: 30px;
-            border-radius: 5px;
-            box-shadow: 0 0 50px rgba(255,255,255,0.1);
-            position: relative;
-            transform: translateY(0);
-            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-
-        .stamp-header {
-            font-family: 'Courier Prime', monospace;
-            border-bottom: 2px solid #222;
-            padding-bottom: 10px;
+        .report-header {
+            border-bottom: 2px dashed #ffb7b2;
+            padding-bottom: 15px;
             margin-bottom: 20px;
-            text-align: center;
-            font-weight: bold;
-            letter-spacing: 1px;
+        }
+        .report-header h2 { font-family: 'Orbitron'; color: #ff69b4; font-size: 1.5rem; }
+        .stamp {
+            border: 2px solid #ff69b4; color: #ff69b4;
+            display: inline-block; padding: 5px 10px;
+            border-radius: 5px; font-weight: bold; font-size: 0.8rem; letter-spacing: 1px;
+            margin-top: 5px; transform: rotate(-5deg);
         }
 
-        .terms-list {
-            font-size: 0.85rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            font-family: 'Courier Prime', monospace;
+        .report-body p { margin-bottom: 15px; font-size: 1rem; line-height: 1.5; }
+        .highlight { color: #d63384; font-weight: bold; }
+
+        .prescription-list {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: left;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        .prescription-list li { margin-bottom: 8px; list-style-type: none; }
+        .prescription-list li:before { content: '💊 '; }
+
+        .accept-btn {
+            background: #ff69b4; color: white; text-decoration: none;
+            padding: 15px 30px; border-radius: 50px; font-weight: bold;
+            display: inline-block; box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+            width: 100%;
         }
 
-        .terms-list li { margin-bottom: 10px; }
-
-        .signature-box {
-            border: 2px dashed #999;
-            background: #f9f9f9;
-            height: 80px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #999;
-            font-size: 0.8rem;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .signature-box.signed {
-            border-color: #25D366;
-            color: #25D366;
-            background: #eaffea;
-        }
-
-        .fingerprint {
-            font-size: 3rem;
-            opacity: 0;
-            transform: scale(2);
-            transition: all 0.3s;
-            position: absolute;
-            color: #d4af37; /* Gold fingerprint */
-        }
-        .signature-box.signed .fingerprint { opacity: 1; transform: scale(1); }
-
-        /* --- SCREEN 2: THE REWARD (Hidden initially) --- */
-        #screen-reward {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none;
-            transition: opacity 1s;
-            background: radial-gradient(circle, #3e2723 0%, #0f0505 100%);
-        }
-
-        .gift-box {
-            position: relative;
-            width: 200px; height: 200px;
-            cursor: pointer;
-            animation: float 3s ease-in-out infinite;
-        }
-        @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-15px);} }
-
-        .lid {
-            position: absolute; top: 0; left: 0; width: 100%; height: 50px;
-            background: #d4af37; /* Gold Lid */
-            z-index: 2;
-            transition: transform 0.5s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            display: flex; justify-content: center; align-items: center;
-            font-family: 'Great Vibes'; color: #3e2723; font-size: 1.5rem;
-        }
-
-        .box-body {
-            position: absolute; top: 50px; left: 10px; width: 180px; height: 120px;
-            background: linear-gradient(135deg, #800020, #4a0012); /* Red Box */
-            z-index: 1;
-        }
-
-        .chocolate-inside {
-            position: absolute; top: 60px; left: 40px; width: 120px; height: 120px;
-            background: #3e2723;
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 3rem;
-            z-index: 0;
-            transform: scale(0);
-            transition: transform 0.5s 0.3s; /* Delay for lid opening */
-            box-shadow: 0 0 30px #d4af37;
-        }
-
-        .message-final {
-            margin-top: 50px;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s 0.8s;
-        }
-
-        .message-final h1 { font-family: 'Great Vibes'; color: #d4af37; font-size: 2.5rem; margin-bottom: 10px; }
-        .message-final p { font-size: 0.9rem; color: #ccc; margin-bottom: 20px; }
-
-        .wa-btn {
-            background: #25D366; color: white; padding: 12px 30px;
-            border-radius: 50px; text-decoration: none; font-weight: bold;
-            display: inline-block; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        /* UTILITIES */
-        .hidden { display: none; }
-        .visible { opacity: 1 !important; pointer-events: all !important; }
-        .lid-open { transform: translateY(-100px) rotate(-10deg); }
-        .choco-reveal { transform: scale(1); }
+        /* Floating Hearts */
+        .heart-float { position: absolute; font-size: 1.5rem; animation: floatUp 1.5s forwards; pointer-events: none; }
+        @keyframes floatUp { to { transform: translateY(-100px); opacity: 0; } }
 
     </style>
 </head>
 <body>
 
-    <div id="screen-contract">
-        <div class="stamp-header">OFFICIAL AGREEMENT</div>
+    <div class="pulse-bg"></div>
+
+    <div class="hud-container" id="scanner-ui">
+        <h1>HEART RESONANCE SCAN</h1>
         
-        <div class="terms-list">
-            <p>I, the undersigned, hereby agree to the following terms:</p>
-            <br>
-            <ul>
-                <li>1. To accept all chocolates given to me. 🍫</li>
-                <li>2. To give unlimited hugs in return. 🤗</li>
-                <li>3. To admit that my partner is the best. 😎</li>
-            </ul>
+        <div class="log-text" id="log">WAITING FOR TOUCH...</div>
+
+        <div class="scanner-ring" id="fingerprint-btn" 
+             onmousedown="startScan()" onmouseup="stopScan()" 
+             ontouchstart="startScan()" ontouchend="stopScan()">
+            <div class="scan-beam"></div>
+            <div class="fingerprint-icon">❤️</div>
         </div>
 
-        <div class="signature-box" id="sign-box" onclick="signContract()">
-            <span id="sign-text">Tap to Sign with Fingerprint</span>
-            <div class="fingerprint">☝️</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="bar"></div>
         </div>
+        
+        <div class="hint">Hold thumb to scan emotional status</div>
     </div>
 
-    <div id="screen-reward">
-        
-        <div class="gift-box" onclick="openBox()">
-            <div class="lid" id="lid">Open Me</div>
-            <div class="chocolate-inside" id="choco">❤️</div>
-            <div class="box-body"></div>
-        </div>
+    <div class="report-overlay" id="report-screen">
+        <div class="report-card">
+            <div class="report-header">
+                <h2>ANALYSIS REPORT</h2>
+                <div class="stamp">VERIFIED CUTIE</div>
+            </div>
+            
+            <div class="report-body">
+                <p><b>Subject:</b> My Favorite Person</p>
+                <p><b>Status:</b> You've been working hard and taking care of everyone else.</p>
+                <p class="highlight">Current Needs: To be spoiled.</p>
+                
+                <div class="prescription-list">
+                    <li><b>Immediate:</b> 1x Giant Chocolate 🍫</li>
+                    <li><b>Daily:</b> Unlimited Hugs & Kisses 🤗</li>
+                    <li><b>Note:</b> You are loved more than you know.</li>
+                </div>
+            </div>
 
-        <div class="message-final" id="final-msg">
-            <h1>It's Official!</h1>
-            <p>You signed the contract. No take-backs!<br>You are mine forever.</p>
-            <a href="#" id="wa-link" class="wa-btn">I Agree! ❤️</a>
+            <a href="#" id="wa-link" class="accept-btn">Accept Care Package 🎁</a>
         </div>
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
+        // --- CONFIG ---
         const yourPhoneNumber = "917795253497"; 
 
-        function signContract() {
-            const box = document.getElementById('sign-box');
-            const text = document.getElementById('sign-text');
-            const contract = document.getElementById('screen-contract');
-            const reward = document.getElementById('screen-reward');
+        // TEXT LOGS (The cute part)
+        const logs = [
+            "CONNECTING TO HEART...",
+            "IDENTIFYING USER...",
+            "MATCH FOUND: 'MY LOVE' ❤️",
+            "CHECKING SMILE LEVELS...",
+            "RESULT: RADIANT ✨",
+            "SCANNING STRESS...",
+            "RESULT: TOO HIGH. REDUCING...",
+            "MEASURING SWEETNESS...",
+            "RESULT: CRITICAL LEVELS 🍯",
+            "COMPILING CARE PLAN..."
+        ];
 
-            if (box.classList.contains('signed')) return;
+        // ELEMENTS
+        const btn = document.getElementById('fingerprint-btn');
+        const ui = document.getElementById('scanner-ui');
+        const logDisplay = document.getElementById('log');
+        const bar = document.getElementById('bar');
+        const reportScreen = document.getElementById('report-screen');
+        const reportCard = document.querySelector('.report-card');
 
-            // 1. Sign Animation
-            box.classList.add('signed');
-            text.innerText = "SIGNED & VERIFIED";
+        let isScanning = false;
+        let progress = 0;
+        let scanInterval;
+
+        function startScan() {
+            isScanning = true;
+            ui.classList.add('scanning');
             
-            // Haptic
-            if(navigator.vibrate) navigator.vibrate(100);
+            // Haptic Pulse
+            if(navigator.vibrate) navigator.vibrate(50);
 
-            // 2. Wait and Transition
-            setTimeout(() => {
-                // Fly the contract away
-                contract.style.transform = "translateY(-150vh) rotate(-10deg)";
+            scanInterval = setInterval(() => {
+                if(!isScanning) return;
                 
-                // Show Reward Screen
-                setTimeout(() => {
-                    contract.style.display = 'none';
-                    reward.classList.add('visible');
-                }, 500);
+                progress += 1;
+                bar.style.width = progress + "%";
+
+                // Update Text Log based on progress
+                const logIndex = Math.floor((progress / 100) * logs.length);
+                if(logIndex < logs.length) {
+                    logDisplay.innerText = logs[logIndex];
+                }
+
+                // Spawn Hearts occasionally
+                if(progress % 10 === 0) createHeart();
+
+                // Complete
+                if(progress >= 100) {
+                    completeScan();
+                }
+
+            }, 50); // 5 seconds total scan time
+        }
+
+        function stopScan() {
+            if(progress >= 100) return; // Already done
+
+            isScanning = false;
+            ui.classList.remove('scanning');
+            logDisplay.innerText = "SCAN INTERRUPTED";
+            logDisplay.style.color = "#ff69b4";
+            
+            clearInterval(scanInterval);
+            
+            // Reset logic
+            setTimeout(() => {
+                if(!isScanning && progress < 100) {
+                    progress = 0;
+                    bar.style.width = "0%";
+                    logDisplay.innerText = "WAITING FOR TOUCH...";
+                    logDisplay.style.color = "#fff";
+                }
             }, 1000);
         }
 
-        function openBox() {
-            const lid = document.getElementById('lid');
-            const choco = document.getElementById('choco');
-            const msg = document.getElementById('final-msg');
+        function createHeart() {
+            const h = document.createElement('div');
+            h.innerText = "❤️";
+            h.classList.add('heart-float');
+            // Random position near finger
+            const rect = btn.getBoundingClientRect();
+            h.style.left = (rect.left + Math.random() * rect.width) + 'px';
+            h.style.top = (rect.top) + 'px';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 1500);
+        }
 
-            // 1. Open Lid
-            lid.classList.add('lid-open');
+        function completeScan() {
+            clearInterval(scanInterval);
+            isScanning = false;
+            
+            // Success Haptic
+            if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
 
-            // 2. Reveal Chocolate
-            choco.classList.add('choco-reveal');
+            // Hide Scanner
+            ui.style.opacity = 0;
 
-            // 3. Show Message
-            msg.style.opacity = 1;
-            msg.style.transform = "translateY(0)";
+            // Show Report
+            setTimeout(() => {
+                reportScreen.style.opacity = 1;
+                reportScreen.style.pointerEvents = 'all';
+                reportCard.style.transform = 'translateY(0)';
+                
+                // Soft Confetti
+                confetti({ 
+                    particleCount: 100, 
+                    spread: 70, 
+                    origin: { y: 0.6 }, 
+                    colors: ['#ff69b4', '#ffb7b2', '#ffffff'],
+                    disableForReducedMotion: true
+                });
+            }, 500);
 
-            // 4. Confetti
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#d4af37', '#ff0000', '#fff'] });
-
-            // 5. Set Link
-            const waMsg = "I signed the love contract! 📝❤️ Now where is my real chocolate?";
-            document.getElementById('wa-link').href = `https://wa.me/${yourPhoneNumber}?text=${encodeURIComponent(waMsg)}`;
+            // WhatsApp Link
+            const msg = "I scanned my heart and got my prescription! 📝💊 I am ready for my Chocolate and Cuddles now! ❤️";
+            document.getElementById('wa-link').href = `https://wa.me/${yourPhoneNumber}?text=${encodeURIComponent(msg)}`;
         }
     </script>
 </body>
