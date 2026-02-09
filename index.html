@@ -4,17 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>You & Me 🍫</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Great+Vibes&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Great+Vibes&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
     
     <style>
-        /* --- RESET & BASE --- */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
 
         body {
             height: 100vh;
             width: 100vw;
-            background: radial-gradient(circle at center, #2b1d1a 0%, #0f0806 100%);
-            font-family: 'Lato', sans-serif;
+            background: #0f0505;
+            font-family: 'Montserrat', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -23,319 +22,328 @@
             color: #fff;
         }
 
-        /* Ambient Glow */
-        .glow-bg {
-            position: absolute; top:0; left:0; width:100%; height:100%;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
-            pointer-events: none;
+        /* Luxury Background */
+        .bg-lux {
+            position: absolute; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #2e1a16 0%, #000 100%);
+            z-index: 0;
         }
 
-        /* --- THE BAR CONTAINER --- */
-        .bar-container {
+        /* --- THE STAGE --- */
+        .stage {
             position: relative;
-            width: 300px;
-            height: 500px;
-            perspective: 1000px;
+            width: 320px;
+            height: 550px;
             z-index: 10;
+            perspective: 1200px;
         }
 
-        /* COMMON LAYER STYLES */
+        /* COMMON LAYER PROPS */
         .layer {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            border-radius: 15px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            border-radius: 12px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform-style: preserve-3d;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            backface-visibility: hidden;
         }
 
-        /* --- LAYER 1: THE WRAPPER (You & Me) --- */
+        /* --- LAYER 1: THE WRAPPER (Red & Gold) --- */
         .wrapper {
-            background: linear-gradient(135deg, #8b0000 0%, #5c0000 100%); /* Rich Red */
-            z-index: 4;
-            border: 2px solid #d4af37;
-            transform-origin: top;
+            background: linear-gradient(135deg, #800020 0%, #4a0012 100%);
+            z-index: 5;
+            border: 2px solid #b8860b;
+            cursor: pointer;
         }
         
-        .brand-text {
-            font-family: 'Cinzel', serif;
-            font-size: 3rem;
-            color: #d4af37; /* Gold */
-            text-align: center;
-            border-top: 2px solid #d4af37;
-            border-bottom: 2px solid #d4af37;
-            padding: 20px 0;
-            margin-bottom: 20px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.4);
-        }
-        
-        .wrapper-tear-strip {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, transparent 90%, rgba(0,0,0,0.2) 100%);
+        .wrapper::before {
+            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
         }
 
-        /* --- LAYER 2: THE SILVER FOIL --- */
+        .brand-box {
+            border: 3px solid #d4af37;
+            padding: 20px 40px;
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .brand-name {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: #d4af37;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+        }
+
+        .tear-strip {
+            position: absolute; top: -10px; right: 20px;
+            width: 40px; height: 120%;
+            background: rgba(0,0,0,0.2);
+            border-left: 1px dashed rgba(255,255,255,0.3);
+            border-right: 1px dashed rgba(255,255,255,0.3);
+        }
+
+        /* --- LAYER 2: SILVER FOIL --- */
         .foil {
-            background: linear-gradient(135deg, #e0e0e0, #b0b0b0, #f5f5f5, #999);
-            z-index: 3;
-            transform-origin: bottom right;
+            background: linear-gradient(135deg, #dcdcdc, #888, #fff, #999);
+            z-index: 4;
+            cursor: pointer;
         }
         
-        /* Crinkled Foil Texture */
+        /* Crinkle Effect */
         .foil::after {
             content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
             background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 2px, transparent 2px, transparent 4px);
-            opacity: 0.5;
+            mix-blend-mode: multiply;
         }
 
-        /* --- LAYER 3: THE CHOCOLATE BAR --- */
+        /* --- LAYER 3: THE CHOCOLATE (Melting Target) --- */
         .chocolate {
             background: #3e2723;
-            z-index: 2;
+            z-index: 3;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(5, 1fr);
             gap: 5px;
             padding: 10px;
-            border: 1px solid #5d4037;
+            align-content: start;
         }
 
-        .choco-square {
-            background: linear-gradient(145deg, #4e342e, #2d1e1b);
+        .choco-block {
+            height: 80px;
+            background: linear-gradient(145deg, #5d4037, #2d1e1b);
             border-radius: 4px;
-            box-shadow: inset 2px 2px 5px rgba(255,255,255,0.1), inset -2px -2px 5px rgba(0,0,0,0.5);
+            box-shadow: inset 2px 2px 5px rgba(255,255,255,0.1), inset -2px -2px 10px rgba(0,0,0,0.5);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.5rem; color: rgba(0,0,0,0.3);
+        }
+
+        /* --- LAYER 4: THE REVEAL (Photo & Letter) --- */
+        .reveal-layer {
+            background: #fff0f5;
+            z-index: 1;
+            padding: 0;
+            text-align: center;
+        }
+
+        .photo-frame {
+            width: 100%; height: 55%;
+            /* INSERT YOUR PHOTO LINK HERE */
+            background-image: url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
             position: relative;
         }
-        /* Emboss effect */
-        .choco-square::before {
-            content: '❤️'; font-size: 1.2rem; position: absolute;
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            opacity: 0.2; filter: grayscale(100%);
+        
+        .photo-frame::after {
+            content: ''; position: absolute; bottom:0; left:0; width:100%; height:50%;
+            background: linear-gradient(to top, #fff0f5, transparent);
         }
 
-        /* --- LAYER 4: THE LIQUID REVEAL --- */
-        .liquid-layer {
-            background: #1a0f0a;
-            z-index: 1;
-            text-align: center;
-            opacity: 0; /* Hidden initially */
-            transition: opacity 1s;
+        .letter {
+            height: 45%;
+            padding: 20px;
+            display: flex; flex-direction: column; justify-content: center;
+            color: #4a0404;
         }
 
-        /* --- ANIMATION CLASSES --- */
-        .slide-up { transform: translateY(-120%) rotate(-5deg); opacity: 0; }
-        .peel-off { transform: translateX(120%) rotate(20deg); opacity: 0; }
-        .melting-bar { opacity: 0; transition: opacity 2s; } /* Bar fades out */
+        .letter h2 { font-family: 'Great Vibes'; font-size: 2.5rem; margin-bottom: 10px; color: #b8860b; }
+        .letter p { font-size: 0.9rem; line-height: 1.6; }
 
-        /* DRIPPING EFFECT */
+        /* --- ANIMATIONS --- */
+        .slide-down-off { transform: translateY(120%) rotate(-5deg); opacity: 0; }
+        .crumple-off { transform: scale(0.8) rotate(10deg); opacity: 0; }
+        
+        /* LIQUID PHYSICS */
         .drip {
             position: absolute;
             background: #3e2723;
-            width: 10px; height: 10px;
+            width: 8px; height: 8px;
             border-radius: 50%;
             pointer-events: none;
             z-index: 20;
         }
-        @keyframes dropFall {
+        
+        /* The animation for the liquid falling */
+        @keyframes liquidFall {
             0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(600px) scale(0.5); }
+            50% { transform: translateY(300px) scale(1.2); }
+            100% { transform: translateY(600px) scale(0.5); opacity: 0; }
         }
 
-        /* TEXT STYLES */
-        .quote {
-            position: absolute; bottom: 50px;
-            font-family: 'Great Vibes', cursive;
-            font-size: 1.8rem;
-            color: #d4af37;
-            text-shadow: 0 0 10px rgba(0,0,0,0.8);
-            width: 100%; text-align: center;
+        /* UI TEXT */
+        .hint-text {
+            position: absolute; bottom: 30px;
+            font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            animation: pulse 2s infinite;
             pointer-events: none;
-            transition: opacity 0.5s;
+            z-index: 50;
         }
-        
-        .instruction {
-            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;
-            margin-top: 10px; opacity: 0.7; animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-        /* FINAL MESSAGE */
-        .final-text {
-            font-family: 'Great Vibes', cursive;
-            font-size: 3.5rem;
-            color: #d4af37;
-            margin-bottom: 20px;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-        }
-        
-        .sub-final {
-            font-size: 1rem; color: #ccc; margin-bottom: 30px;
-        }
-
+        /* BUTTON */
         .wa-btn {
-            background: linear-gradient(45deg, #d4af37, #fcf6ba, #d4af37);
-            color: #3e2723; padding: 15px 40px; border-radius: 50px;
-            text-decoration: none; font-weight: bold; font-size: 1.1rem;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            background: #25D366; color: white; padding: 12px 30px;
+            border-radius: 50px; text-decoration: none; font-weight: bold;
+            margin-top: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-size: 0.9rem;
         }
 
     </style>
 </head>
 <body>
 
-    <div class="glow-bg"></div>
+    <div class="bg-lux"></div>
 
-    <div class="bar-container">
-
-        <div class="layer liquid-layer" id="layer-final">
-            <h1 class="final-text">I Love You</h1>
-            <p class="sub-final">You are my sweetest addiction.</p>
-            <a href="#" id="wa-link" class="wa-btn">Send Love ❤️</a>
+    <div class="stage">
+        
+        <div class="layer reveal-layer">
+            <div class="photo-frame"></div>
+            <div class="letter">
+                <h2>I Love You</h2>
+                <p>You melted my heart just like this chocolate.</p>
+                <p>You are my favorite flavor.</p>
+                <a href="#" id="wa-link" class="wa-btn">I Melted It! ❤️</a>
+            </div>
         </div>
 
         <div class="layer chocolate" id="layer-choco" 
-             onmousedown="startMelting()" onmouseup="stopMelting()" 
-             ontouchstart="startMelting()" ontouchend="stopMelting()">
-            <div class="choco-square"></div><div class="choco-square"></div><div class="choco-square"></div>
-            <div class="choco-square"></div><div class="choco-square"></div><div class="choco-square"></div>
-            <div class="choco-square"></div><div class="choco-square"></div><div class="choco-square"></div>
-            <div class="choco-square"></div><div class="choco-square"></div><div class="choco-square"></div>
-            <div class="choco-square"></div><div class="choco-square"></div><div class="choco-square"></div>
+             onmousedown="startLiquid()" onmouseup="stopLiquid()" 
+             ontouchstart="startLiquid()" ontouchend="stopLiquid()">
+            <div class="choco-block">❤</div><div class="choco-block"></div><div class="choco-block"></div>
+            <div class="choco-block"></div><div class="choco-block">❤</div><div class="choco-block"></div>
+            <div class="choco-block"></div><div class="choco-block"></div><div class="choco-block">❤</div>
+            <div class="choco-block"></div><div class="choco-block">❤</div><div class="choco-block"></div>
+            <div class="choco-block">❤</div><div class="choco-block"></div><div class="choco-block"></div>
+            
+            <div class="hint-text" id="melt-hint">Hold to Melt</div>
         </div>
 
-        <div class="layer foil" id="layer-foil" onclick="removeFoil()">
-            <div style="text-align:center; padding:20px;">
-                <h2 style="font-family:'Great Vibes'; font-size:2.5rem; color:#333;">Silver Love</h2>
-                <p style="color:#555; font-size:0.9rem; margin-top:10px;">Protected with care.</p>
+        <div class="layer foil" id="layer-foil" onclick="peelFoil()">
+            <h2 style="color:#555; font-family:'Cinzel';">Silver Edition</h2>
+            <div class="hint-text" style="color:#555">Tap to Peel</div>
+        </div>
+
+        <div class="layer wrapper" id="layer-wrapper" onclick="tearWrapper()">
+            <div class="tear-strip"></div>
+            <div class="brand-box">
+                <div class="brand-name">You & Me</div>
+                <div style="font-size:0.7rem; letter-spacing:3px; color:#d4af37; margin-top:5px;">PREMIUM DARK</div>
             </div>
-            <div class="instruction" style="color:#333; position:absolute; bottom:30px;">Tap to Peel Foil</div>
-        </div>
-
-        <div class="layer wrapper" id="layer-wrapper" onclick="removeWrapper()">
-            <div class="brand-text">You & Me</div>
-            <p style="text-align:center; font-style:italic; opacity:0.9;">Premium Edition</p>
-            <div class="instruction" style="position:absolute; bottom:30px;">Tap to Unwrap</div>
+            <div class="hint-text">Tap to Unwrap</div>
         </div>
 
     </div>
-
-    <div class="quote" id="quote-text">A love as sweet as this...</div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         // --- CONFIG ---
         const yourPhoneNumber = "917795253497"; 
 
-        // Elements
+        // ELEMENTS
         const wrapper = document.getElementById('layer-wrapper');
         const foil = document.getElementById('layer-foil');
         const chocolate = document.getElementById('layer-choco');
-        const finalLayer = document.getElementById('layer-final');
-        const quote = document.getElementById('quote-text');
-        
-        // --- STEP 1: UNWRAP ---
-        function removeWrapper() {
-            wrapper.classList.add('slide-up');
-            // Sound effect trigger (logic only)
-            if(navigator.vibrate) navigator.vibrate(50);
-            
-            setTimeout(() => {
-                quote.style.opacity = 0;
-                setTimeout(() => {
-                    quote.innerText = "Peel away the layers...";
-                    quote.style.opacity = 1;
-                }, 500);
-            }, 200);
+        const hint = document.getElementById('melt-hint');
+
+        // --- STEP 1: TEAR WRAPPER ---
+        function tearWrapper() {
+            wrapper.classList.add('slide-down-off');
+            if(navigator.vibrate) navigator.vibrate(100);
         }
 
         // --- STEP 2: PEEL FOIL ---
-        function removeFoil() {
-            foil.classList.add('peel-off');
-            if(navigator.vibrate) navigator.vibrate(50);
-
-            setTimeout(() => {
-                quote.style.opacity = 0;
-                setTimeout(() => {
-                    quote.innerText = "This is my heart... Hold to melt it.";
-                    quote.style.opacity = 1;
-                }, 500);
-            }, 200);
+        function peelFoil() {
+            foil.classList.add('crumple-off');
+            // Play crunchy sound effect simulation via visual shake
+            if(navigator.vibrate) navigator.vibrate([50, 50, 50]);
         }
 
-        // --- STEP 3: MELT CHOCOLATE ---
+        // --- STEP 3: LIQUID MELT PHYSICS ---
         let isMelting = false;
-        let meltLevel = 0;
+        let meltProgress = 0;
         let meltInterval;
 
-        function startMelting() {
+        function startLiquid() {
             isMelting = true;
-            quote.innerText = "You melt me completely...";
-            
+            hint.innerText = "Melting...";
+            hint.style.opacity = 1;
+
             meltInterval = setInterval(() => {
                 if(!isMelting) return;
-                
-                meltLevel++;
-                
-                // 1. Fade out the solid bar
-                chocolate.style.opacity = (100 - meltLevel) / 100;
 
-                // 2. Create Drops (The "Water" effect)
-                createDrop();
+                meltProgress += 1; // Speed of melt
 
-                // 3. Reveal Final
-                if (meltLevel >= 100) {
-                    finishMelt();
+                // 1. DISSOLVE THE BAR
+                chocolate.style.opacity = (100 - meltProgress) / 100;
+
+                // 2. SPAWN LIQUID DROPS
+                // We spawn multiple drops per tick for a "gushing" effect
+                spawnDrop(); 
+                if(meltProgress % 5 === 0) spawnDrop();
+
+                // 3. COMPLETION
+                if(meltProgress >= 100) {
+                    finishExperience();
                 }
-            }, 40);
+
+            }, 30);
         }
 
-        function stopMelting() {
+        function stopLiquid() {
             isMelting = false;
             clearInterval(meltInterval);
+            hint.innerText = "Hold to Melt";
         }
 
-        function createDrop() {
+        function spawnDrop() {
             const drop = document.createElement('div');
             drop.classList.add('drip');
             
-            // Random position within container
+            // Randomize position across the width of the bar
             const rect = chocolate.getBoundingClientRect();
-            const x = Math.random() * rect.width;
-            const y = Math.random() * rect.height;
-            
-            drop.style.left = x + 'px';
-            drop.style.top = y + 'px';
-            
-            // Varied size for realism
-            const size = Math.random() * 10 + 5 + 'px';
+            const startX = Math.random() * rect.width;
+            const startY = Math.random() * (rect.height / 2); // Start from top half
+
+            drop.style.left = startX + 'px';
+            drop.style.top = startY + 'px';
+
+            // Randomize Drop Size
+            const size = Math.random() * 12 + 4 + 'px';
             drop.style.width = size;
-            drop.style.height = size; /* Elongate for drip look */
+            drop.style.height = size;
+            
+            // Randomize Shape (teardrop)
             drop.style.borderRadius = "50% 50% 50% 50% / 60% 60% 40% 40%";
-            
-            drop.style.animation = "dropFall 1s linear forwards";
-            
+            drop.style.background = `rgba(62, 39, 35, ${Math.random() * 0.5 + 0.5})`; // Varying opacity
+
+            // Animate
+            drop.style.animation = `liquidFall ${Math.random() * 0.5 + 0.5}s linear forwards`;
+
             chocolate.appendChild(drop);
-            
-            // Remove after fall
+
+            // Cleanup
             setTimeout(() => drop.remove(), 1000);
         }
 
-        function finishMelt() {
+        function finishExperience() {
             clearInterval(meltInterval);
-            chocolate.style.display = 'none';
-            finalLayer.style.opacity = 1;
+            chocolate.style.display = 'none'; // Gone
             
-            quote.style.opacity = 0; // Hide bottom quote
-            
-            // Celebration
-            confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#d4af37', '#fff'] });
+            // EXPLOSION
+            confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: ['#d4af37', '#fff', '#3e2723'] });
 
-            // Set Link
-            const msg = "I melted your chocolate heart! 🍫❤️ You are my favorite treat. Happy Chocolate Day!";
+            // WhatsApp Link
+            const msg = "I melted the You & Me chocolate and found the secret! 🍫❤️ Love you!";
             document.getElementById('wa-link').href = `https://wa.me/${yourPhoneNumber}?text=${encodeURIComponent(msg)}`;
         }
 
